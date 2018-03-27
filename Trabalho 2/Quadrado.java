@@ -1,6 +1,6 @@
 public class Quadrado extends Figura {
 
-	String forma;
+	
 	int cor;
 
 	Quadrado(float x[], float y[]) {
