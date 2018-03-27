@@ -1,14 +1,18 @@
-public class Quadrado{
-	String forma;
-	float X[];
-	float Y[];
-	int cor;
-	Quadrado(float x[], float y[]) {
-		this.X =new float[4];
-		this.X=x;
-		this.Y =new float[4];
-		this.Y=y;
+public class Quadrado extends Figura {
 
+	String forma;
+	int cor;
+
+	Quadrado(float x[], float y[]) {
+		super(x, y);
 	}
 
+	public void desenhar(int coloracao) {
+		this.cor=coloracao;
+	}
+
+	@Override
+	public String toString() {
+		return "Figura quadrada";
+	}
 }
