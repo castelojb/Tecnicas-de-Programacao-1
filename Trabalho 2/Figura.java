@@ -1,11 +1,11 @@
-abstract class Figura {
+public abstract class Figura {
 
 	float X[];
 	float Y[];
 
 	Figura(float x[], float y[]) {
-		this.X=x;
-		this.Y=y;
+		this.X = x;
+		this.Y = y;
 	}
 
 	public float calcularArea() {//solucao generica qualquer figura com lados>=3
@@ -15,15 +15,13 @@ abstract class Figura {
 
 		float colunax[]= new float[this.X.length + 1];
 		float colunay[]= new float[this.Y.length + 1];
-		for(int i=0; i<this.X.length; i++){//copia o conjunto para expancao
-			colunax[i] = this.X[i];
-			colunay[i] = this.Y[i];
-}
-		
+
+		System.arraycopy(this.X, 0, colunax, 0, this.X.length);//copia o conjunto para expancao
+		System.arraycopy(this.Y, 0, colunay, 0, this.Y.length);
+
 		colunax[this.X.length] = this.X[0];
-	
 		colunay[this.Y.length] = this.Y[0];
-		
+
 		for(int aux = 0; aux < colunax.length-1; aux++) {
 			dir = (colunax[aux]*colunay[aux+1]) + dir;
 			esq = (colunay[aux]*colunax[aux+1]) + esq;
@@ -43,8 +41,10 @@ abstract class Figura {
 
 		for(int aux = 0; aux < this.X.length; aux++) {
 			this.X[aux] = this.X[aux] + dx;
-			this.Y[aux] = this.Y[aux] + dy;
 		}
 
+		for(int aux = 0; aux < this.Y.length; aux++) {
+			this.Y[aux] = this.Y[aux] + dx;
+		}
 	}
 }

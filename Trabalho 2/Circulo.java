@@ -1,20 +1,20 @@
+public class Circulo extends Figura{
 
-public class Circulo extends Figura {
 	float raio;
-	Circulo(float x[], float y[],float r){
-		super (x,y);
-		this.raio=r;
+
+	Circulo(float centroX[], float centroY[], float raio){
+		super(centroX, centroY);
+		this.raio = raio;
 	}
-	
+
 	@Override
-	public float calcularArea() {
-		float S;
-		S= (float) (3.14*this.raio*this.raio);
-		return S;
+	public float calcularArea(){
+		float area = (float)(3.141592 * this.raio * this.raio);
+		return  area;
 	}
+
 	@Override
 	public String toString() {
-		return "Circulo";
+		return "Figura Circular";
 	}
-	
 }

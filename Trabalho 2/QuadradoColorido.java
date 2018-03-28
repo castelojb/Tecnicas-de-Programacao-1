@@ -13,7 +13,7 @@ public class QuadradoColorido extends Quadrado implements Colorida {
 
 	@Override
 	public String toString() {
-		return "Figura quadrada colorida";
+		return "Figura Quadrada Colorida";
 	}
 
 }
