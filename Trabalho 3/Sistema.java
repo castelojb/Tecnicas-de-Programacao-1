@@ -58,7 +58,7 @@ public class Sistema {
 		if(this.consultarExistencia(indice)) {
 			return false;
 		}
-		((Açoes) this.conta[indice]).Credito(valor);
+		((Açoes) this.conta[indice]).Credito(valor);//Polimorfismo coerçao
 		return true;
 	}
 	
