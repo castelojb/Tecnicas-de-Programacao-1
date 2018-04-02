@@ -1,0 +1,1 @@
+Eu João Araújo realizei a construção da classe abstrata em conjunto com a interface, Luan Carvalho elaborou as Contas XPTO  e Haryame Vasconcelos fez o Sistema. Apesar das diferentes funções, cooperamos para cumpri-las.
