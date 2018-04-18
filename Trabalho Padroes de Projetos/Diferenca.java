@@ -1,5 +1,10 @@
 class Diferenca extends Operador{
-	int calcular() {
+	
+	Diferenca(Expressao esquerda, Expressao direita){
+		super(esquerda,  direita);
+	}
+	
+	double calcular() {
 		return esquerda.calcular() - direita.calcular();
 	}
 }

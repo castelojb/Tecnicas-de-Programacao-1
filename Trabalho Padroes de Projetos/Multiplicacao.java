@@ -1,5 +1,9 @@
 class Multiplicacao extends Operador{
-	Double calcular() {
+	
+	Multiplicacao(Expressao esquerda, Expressao direita){
+		super(esquerda,  direita);
+	}
+	double calcular() {
 		return esquerda.calcular() * direita.calcular();
 	}
 }

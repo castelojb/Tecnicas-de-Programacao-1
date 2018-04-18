@@ -5,16 +5,20 @@ abstract class Operador extends Expressao{
 		this.esquerda = esquerda;
 		this.direita = direita;
 		if (esquerda instanceof Operando) {
-			this.armazena(esquerda);
+			this.armazena((Operando)esquerda);
 			
 		}
 		if (direita  instanceof Operando) {
-			this.armazena(direita);
+			this.armazena((Operando)direita);
 			
 		}
 	}
 	Operador(Expressao esquerda){
-		this.esquerda = esquerda;
+		this.esquerda=esquerda;
+		
+		if(esquerda instanceof Operando) {
+			this.armazena((Operando)esquerda);
+		}
 		
 	}
 

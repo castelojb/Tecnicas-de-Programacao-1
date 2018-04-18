@@ -5,7 +5,7 @@ class Operando extends Expressao{
 		this.valor = valor;
 	}
 
-	float calcular(){
+	double calcular(){
 		return valor;
 	}
 

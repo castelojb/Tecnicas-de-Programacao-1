@@ -14,6 +14,7 @@ class Main{
 		op2.adicionar(op4, op5);
 */
 		op10 = new Cosseno(new Operando(0));
+		op10.leafUpdate(0, 90);
 
 		System.out.println(op10.calcular());
 	}
