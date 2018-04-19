@@ -5,6 +5,9 @@ class Cosseno extends Operador{
 	}
 
 	double calcular() {
-		return Math.cos(Math.toRadians(esquerda.calcular()));
+		retorno= Math.cos(Math.toRadians(esquerda.calcular()));
+		ob1.update(retorno);
+		ob2.update(retorno);
+		return retorno;
 	}
 }

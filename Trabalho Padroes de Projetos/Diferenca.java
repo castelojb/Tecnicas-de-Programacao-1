@@ -5,6 +5,10 @@ class Diferenca extends Operador{
 	}
 	
 	double calcular() {
-		return esquerda.calcular() - direita.calcular();
+		retorno= esquerda.calcular() - direita.calcular();
+		ob1.update(retorno);
+		ob2.update(retorno);
+		
+		return retorno;
 	}
 }

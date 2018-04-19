@@ -5,6 +5,11 @@ class Seno extends Operador{
 	}
 
 	double calcular() {
-		return Math.sin(Math.toRadians(esquerda.calcular()));
+		retorno= Math.sin(Math.toRadians(esquerda.calcular()));
+		
+		ob1.update(retorno);
+		ob2.update(retorno);
+		
+		return retorno;
 	}
 }

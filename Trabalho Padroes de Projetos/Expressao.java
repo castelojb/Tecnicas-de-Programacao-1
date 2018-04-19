@@ -1,6 +1,9 @@
 abstract class Expressao{
 	Operando folha[] = new Operando[1];
 	int pos = 0;
+	double retorno;
+	Observer ob1=new Observador_neg();
+	Observer ob2=new Observador_pos();
 
 	void armazena(Operando op){
 		if (pos == folha.length) {
