@@ -170,18 +170,20 @@ public class MatrizDados {
 		HashMap<String, Integer> dicionario = new HashMap<String, Integer>();
 	
 		for (int i = 0; i < tamanho ; i++) {
-			if (dicionario.containsKey(this.getElemento(i, coluna))) {
-				aux = dicionario.get(this.getElemento(i, coluna));
-				aux++;
-				dicionario.put(this.getElemento(i, coluna), aux);
-			} else {
-				aux = 1;
-				dicionario.put(this.getElemento(i, coluna), aux);
-			}
+			if (!this.getElemento(i, coluna).equals("NA") && !this.getElemento(i, coluna).equals("")) {
+				if (dicionario.containsKey(this.getElemento(i, coluna))) {
+					aux = dicionario.get(this.getElemento(i, coluna));
+					aux++;
+					dicionario.put(this.getElemento(i, coluna), aux);
+				} else {
+					aux = 1;
+					dicionario.put(this.getElemento(i, coluna), aux);
+				}
 
-			if (aux > maior) {
-				maior = aux;
-				moda = this.getElemento(i, coluna);
+				if (aux > maior) {
+					maior = aux;
+					moda = this.getElemento(i, coluna);
+				}	
 			}
 		}
 		return moda;
@@ -208,8 +210,11 @@ public class MatrizDados {
 		int valor = 0;
 		int tamanho = this.getTamanho();
 		int maximo[] = new int[tamanho];
+		
 		for (int i = 0; i < tamanho ; i++) {
-			maximo[i] = Integer.parseInt(this.getElemento(i, coluna));
+			if (!this.getElemento(i, coluna).equals("NA")) {
+				maximo[i] = Integer.parseInt(this.getElemento(i, coluna));
+			}
 		}
 
 		Arrays.sort(maximo);
