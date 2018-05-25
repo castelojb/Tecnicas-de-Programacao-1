@@ -10,7 +10,7 @@ public class Controler implements Estatistica{
 		locais=new ArrayList<String>();
 	}
 	
-	boolean setArq(String onde) {//metodo de colocar arquivos
+	int setArq(String onde) {//metodo de colocar arquivos
 		File arquivoCSV = new File(onde);
 		csv arquivo=new csv(arquivoCSV);
 		
@@ -20,7 +20,7 @@ public class Controler implements Estatistica{
 				
 				lista.set(i, arquivo);
 				
-				return true;
+				return i;
 				
 			}
 		}
@@ -28,7 +28,7 @@ public class Controler implements Estatistica{
 		locais.add(onde);
 		lista.add(arquivo);
 		
-		return true;
+		return this.getKey(onde);
 	}
 	
 	int getKey(String onde) {
