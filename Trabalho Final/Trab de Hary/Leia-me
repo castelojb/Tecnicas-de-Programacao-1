@@ -1,0 +1,9 @@
+cuida
+
+double skewness(int colunaFixa, String valor, int coluna){}
+double skewness(int coluna){}
+
+double kurtoses(int colunaFixa, String valor, int coluna){}
+double kurtoses(int coluna){}
+
+quero um metodo que consiga atualizar o valor na tabela e salvar ele
