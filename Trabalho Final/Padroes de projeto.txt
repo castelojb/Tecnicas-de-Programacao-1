@@ -1,0 +1,2 @@
+Nesse trabalho, utilizamos 2 padrões em conjunto: O Observer e o Controller.Entretanto, eles não seguem a risca suas definições, pois achamos melhor adapta-los as nossas necessidade e preservando a ideia de funcionamento deles.
+Vale a pena salientar que outros padrões, como o Decorator, foram utilizados, porem, como as suas funcionalidades foram muito alteradas, não se pode dizer que foram implementados, apesar de serem utilizadas as suas lógicas.
