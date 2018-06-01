@@ -79,40 +79,40 @@ public class PainelInformacoes extends JPanel{
 
          //   BARRA DOS BOTÕES - //
 
-         Botao media = new Botao("MÉDIA");
+         Botao media = new Botao("Média");
          media.setMargin(new Insets(0, 50, 0, 50));
          media.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          media.addActionListener(new Numericos(this, "media"));
 
-         Botao moda = new Botao("MODA");
+         Botao moda = new Botao("Moda");
          moda.setMargin(new Insets(0, 50,0 , 50));
          moda.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          moda.addActionListener(new Numericos(this, "moda"));
 
-         Botao variancia = new Botao("VARIÂNCIA");
+         Botao variancia = new Botao("Variância");
          variancia.setMargin(new Insets(0, 50,0 , 50));
          variancia.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          variancia.addActionListener(new Numericos(this, "variancia"));
 
-         Botao desvio = new Botao("DESVIO");
+         Botao desvio = new Botao("Desvio Padrão");
          desvio.setMargin(new Insets(0, 50,0 , 50));
          desvio.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          desvio.addActionListener(new Numericos(this, "desvio"));
 
 
-         Botao mediana = new Botao("MEDIANA");
+         Botao mediana = new Botao("Mediana");
          mediana.setMargin(new Insets(0, 50,0 , 50));
          mediana.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          mediana.addActionListener(new Numericos(this, "mediana"));
 
 
-         Botao minimo = new Botao("MÍNIMO");
+         Botao minimo = new Botao("Mínimo");
          minimo.setMargin(new Insets(0, 50,0 , 50));
          minimo.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          minimo.addActionListener(new Numericos(this, "minimo"));
 
 
-         Botao maximo = new Botao("MÁXIMO");
+         Botao maximo = new Botao("Máximo");
          maximo.setMargin(new Insets(0, 50,0 , 50));
          maximo.configurarFonteCorFundo(fonteBotao, corBranca, corTeste);
          maximo.addActionListener(new Numericos(this, "maximo"));
@@ -163,39 +163,44 @@ public class PainelInformacoes extends JPanel{
 
         //   BARRA DOS GRÁFICOS - //
          //  Graficos
-         Botao histograma = new Botao("HISTOGRAMA");
+         Botao histograma = new Botao("Histograma");
          histograma.setMargin(new Insets(0, 50,0 , 50));
          histograma.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
 
-         Botao frequenciasG = new Botao("FREQUÊNCIAS");
+         Botao frequenciasG = new Botao("Frequências");
          frequenciasG.setMargin(new Insets(0, 50,0 , 50));
          frequenciasG.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
-         frequenciasG.addActionListener(new Frequencia(this));
+        // frequenciasG.addActionListener(new Frequencia(this));
 
-         Botao boxplot = new Botao("BOXPLOT");
+         Botao boxplot = new Botao("Boxplot");
          boxplot.setMargin(new Insets(0, 50,0 , 50));
          boxplot.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
 
-         Botao scartterplot = new Botao("SCARTTERPLOT");
+         Botao scartterplot = new Botao("Scarteplot");
          scartterplot.setMargin(new Insets(0, 50,0 , 50));
          scartterplot.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
 
          //  Tabela
-         Botao frequenciasT = new Botao("FREQUÊNCIAS");
+         Botao frequenciasT = new Botao("Frequências");
          frequenciasT.setMargin(new Insets(0, 50,0 , 50));
          frequenciasT.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+         frequenciasT.addActionListener(new Frequencia(this, "frequenciasT"));
 
-         Botao contingencia = new Botao("CONTINGÊNCIA");
+         Botao contingencia = new Botao("Contingência");
          contingencia.setMargin(new Insets(0, 50,0 , 50));
          contingencia.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+         contingencia.addActionListener(new Contingencia(this, "contingencia"));
 
-         Botao covariancia = new Botao("COVARIÂNCIA");
+         Botao covariancia = new Botao("Covariância");
          covariancia.setMargin(new Insets(0, 50,0 , 50));
          covariancia.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+         covariancia.addActionListener(new Covariancia(this, "covariancia"));
 
-         Botao correlacao = new Botao("CORRELAÇÃO");
+         Botao correlacao = new Botao("Coeficiente");
          correlacao.setMargin(new Insets(0, 50,0 , 50));
          correlacao.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+         correlacao.addActionListener(new Coeficiente(this, "coeficiente"));
+
 
          JLabel tituloGrafico = new JLabel("GRÁFICOS", SwingConstants.CENTER);
          tituloGrafico.setFont(fonteBotao);

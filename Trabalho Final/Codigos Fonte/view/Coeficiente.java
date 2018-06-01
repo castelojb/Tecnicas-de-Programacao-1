@@ -2,17 +2,20 @@ package view;
 import controller.Controler;
 import javafx.scene.control.ComboBox;
 import layout.Botao;
+import org.jfree.chart.title.Title;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.ImageObserver;
 import java.lang.reflect.Method;
 
-public class Frequencia implements ActionListener{
+public class Coeficiente implements ActionListener{
     private Color corFundo = new Color(10, 10, 10);
     private Color corBotaoBuscar = new Color(10, 50, 10);
     private Color corBotaoAnalisar = new Color(5, 50, 100);
@@ -26,7 +29,8 @@ public class Frequencia implements ActionListener{
     boolean escolha = false;
     String colunaFixa = "Nenhum";
     String elementoFixo;
-    String colunaCalculavel;
+    String colunaCalculavel1;
+    String colunaCalculavel2;
     int colunaMedia;
 
     JTable valor;
@@ -34,36 +38,36 @@ public class Frequencia implements ActionListener{
 
     JComboBox setColunaFixa;
     JComboBox setElementoFixo;
-    JComboBox setColunaCalculavel;
+    JComboBox setColunaCalculavel1;
+    JComboBox setColunaCalculavel2;
 
     String[] nenhum = {"Nenhum"};
 
     JPanel calcular;
 
-    Frequencia(PainelInformacoes informacoes, String nome){
+    Coeficiente(PainelInformacoes informacoes, String nome){
         this.controlador = informacoes.getControlador();
         this.informacoes = informacoes;
         this.nome = nome;
     }
 
     public void actionPerformed(ActionEvent evento) {
-        painel = new JPanel();
-        painel.setPreferredSize(new Dimension(740, 600));
-        painel.setLayout(new BorderLayout());
 
+        painel = new JPanel();
         JPanel painelBotao = new JPanel();
+        painel.setPreferredSize(new Dimension(740, 650));
+        painel.setLayout(new BorderLayout());
         painelBotao.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
+        JPanel escolhas = new JPanel();
         JPanel centro = new JPanel();
         centro.setLayout(new BorderLayout());
-
-        JPanel escolhas = new JPanel();
         escolhas.setLayout(new GridLayout(2, 4, 10, 1));
 
         calcular = new JPanel();
         calcular.setLayout(new BorderLayout());
-        calcular.setPreferredSize(new Dimension(700, 500));
+        calcular.setPreferredSize(new Dimension(700, 520));
 
         JPanel cabecalho = new JPanel();
         cabecalho.setLayout(new BorderLayout());
@@ -92,19 +96,27 @@ public class Frequencia implements ActionListener{
         setElementoFixo.setMaximumRowCount(4);
         setElementoFixo.addItemListener(new ElementoFixo());
 
-        JLabel tituloColunaCalculavel = new JLabel("     Média em relação:        ");
-        String[] colunaCalculavel = controlador.titulosColunas();
-        setColunaCalculavel = new JComboBox(colunaCalculavel);
-        setColunaCalculavel.setMaximumRowCount(4);
-        setColunaCalculavel.addItemListener(new ColunaCalculavel1());
+        JLabel tituloColunaCalculavel1 = new JLabel("     Média em relação:        ");
+        String[] colunaCalculavel1 = controlador.colunasNumericas();
+        setColunaCalculavel1 = new JComboBox(colunaCalculavel1);
+        setColunaCalculavel1.setMaximumRowCount(4);
+        setColunaCalculavel1.addItemListener(new ColunaCalculavel1());
+
+        JLabel tituloColunaCalculavel2 = new JLabel("     Média em relação:        ");
+        String[] colunaCalculavel2 = controlador.colunasNumericas();
+        setColunaCalculavel2 = new JComboBox(colunaCalculavel2);
+        setColunaCalculavel2.setMaximumRowCount(4);
+        setColunaCalculavel2.addItemListener(new ColunaCalculavel2());
 
         escolhas.add(tituloColunaFixa);
         escolhas.add(tituloElementoFixo);
-        escolhas.add(tituloColunaCalculavel);
+        escolhas.add(tituloColunaCalculavel1);
+        escolhas.add(tituloColunaCalculavel2);
 
         escolhas.add(setColunaFixa);
         escolhas.add(setElementoFixo);
-        escolhas.add(setColunaCalculavel);
+        escolhas.add(setColunaCalculavel1);
+        escolhas.add(setColunaCalculavel2);
 
         Botao botaoCalcular = new Botao("CALCULAR");
         botaoCalcular.setMargin(new Insets(0, 0,0 , 0));
@@ -161,12 +173,21 @@ public class Frequencia implements ActionListener{
     public class ColunaCalculavel1 implements ItemListener {
         public void itemStateChanged(ItemEvent evento) {
             if (evento.getStateChange() == ItemEvent.SELECTED){
-                colunaCalculavel = setColunaCalculavel.getSelectedItem().toString();
+                colunaCalculavel1 = setColunaCalculavel1.getSelectedItem().toString();
             }
 
         }
     }
 
+
+    public class ColunaCalculavel2 implements ItemListener {
+        public void itemStateChanged(ItemEvent evento) {
+            if (evento.getStateChange() == ItemEvent.SELECTED){
+                colunaCalculavel2 = setColunaCalculavel2.getSelectedItem().toString();
+            }
+
+        }
+    }
 
     public class Fechar implements ActionListener {
         JPanel painel;
@@ -183,47 +204,70 @@ public class Frequencia implements ActionListener{
         public void actionPerformed(ActionEvent evento) {
             Method metodo;
             Object texto;
-            String[] titulo = new String[3];
-            titulo[0] = colunaCalculavel;
-            titulo[1] = "Frequencia absoluat";
-            titulo[2] = "Frequencia relativa";
+            String[] titulo = new String[5];
+            titulo[0] = colunaCalculavel1;
+            titulo[1] = colunaCalculavel2;
+            titulo[2] = "desvio de "+colunaCalculavel1;
+            titulo[3] = "desvio de "+colunaCalculavel2;
+            titulo[4] = "Covariancia";
 
             try{
                 if (colunaFixa.matches("Nenhum")){
-                    metodo = Controler.class.getMethod(nome, String.class);
-                    texto = metodo.invoke(controlador, colunaCalculavel);
+                    metodo = Controler.class.getMethod(nome, String.class, String.class);
+                    texto = metodo.invoke(controlador, colunaCalculavel1, colunaCalculavel2);
+                    String[][] resultado = (String[][])texto;
+                    String pearson;
+                    if (resultado == null){
+                        pearson = "NÃO HÁ ELEMENTOS";
+                        calcular.removeAll();
 
-                    valor = new JTable((String[][])texto, titulo){
-                        public boolean isCellEditable(int row, int column){
-                            Object o = getValueAt(row, column);
-                            return false;
-                        }
-                    };
-                    valor.setFillsViewportHeight(true);
-                    valor.getTableHeader().setReorderingAllowed(false);
-                    JScrollPane scrollPane = new JScrollPane (valor);
-                    scrollPane.setPreferredSize(new Dimension( 700,500));
-                    calcular.removeAll();
-                    calcular.add(scrollPane, BorderLayout.NORTH);
+                    }else{
+                        pearson = Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])) == 0? "0" : String.valueOf((Double.parseDouble(resultado[resultado.length-1][4]))/Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])));
+                        valor = new JTable(resultado, titulo){
+                            public boolean isCellEditable(int row,int column){
+                                Object o = getValueAt(row,column);
+                                return false;
+                            }
+                        };
+                        valor.setFillsViewportHeight(true);
+                        valor.getTableHeader().setReorderingAllowed(false);
+                        JScrollPane scrollPane = new JScrollPane (valor);
+                        scrollPane.setPreferredSize(new Dimension( 700,500));
+                        calcular.removeAll();
+                        calcular.add(scrollPane, BorderLayout.NORTH);
+                    }
+                    calcular.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "COEFICIENTE DE PEARSON: "+pearson, TitledBorder.CENTER, TitledBorder.TOP));
+
 
                 } else{
-                    metodo = Controler.class.getMethod(nome, String.class, String.class, String.class);
-                    texto = metodo.invoke(controlador, colunaFixa, elementoFixo, colunaCalculavel);
-                    valor = new JTable((String[][])texto, titulo){
-                        public boolean isCellEditable(int row, int column){
-                            Object o = getValueAt(row, column);
-                            return false;
-                        }
-                    };
-                    valor.setFillsViewportHeight(true);
-                    valor.getTableHeader().setReorderingAllowed(false);
-                    JScrollPane scrollPane = new JScrollPane (valor);
-                    scrollPane.setPreferredSize(new Dimension( 700,500));
-                    calcular.removeAll();
-                    calcular.add(scrollPane, BorderLayout.NORTH);
+                    metodo = Controler.class.getMethod(nome, String.class, String.class, String.class, String.class);
+                    texto = metodo.invoke(controlador, colunaFixa, elementoFixo, colunaCalculavel1, colunaCalculavel2);
+                    String[][] resultado = (String[][])texto;
+                    String pearson;
+                    if (resultado == null){
+                        pearson = "NÃO HÁ ELEMENTOS";
+                        calcular.removeAll();
+
+                    }else{
+                        pearson = Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])) == 0? "0" : String.valueOf((Double.parseDouble(resultado[resultado.length-1][4]))/Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])));
+                        valor = new JTable(resultado, titulo){
+                            public boolean isCellEditable(int row,int column){
+                                Object o = getValueAt(row,column);
+                                return false;
+                            }
+                        };
+
+                        valor.setFillsViewportHeight(true);
+                        valor.getTableHeader().setReorderingAllowed(false);
+                        JScrollPane scrollPane = new JScrollPane (valor);
+                        scrollPane.setPreferredSize(new Dimension( 700,500));
+                        calcular.removeAll();
+                        calcular.add(scrollPane, BorderLayout.NORTH);
+                    }
+                    calcular.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "COEFICIENTE DE PEARSON: "+pearson, TitledBorder.CENTER, TitledBorder.TOP));
                 }
                 calcular.repaint();
-                informacoes.revalidate();
+                painel.revalidate();
 
             } catch (Exception e){
                 System.out.println("Nao deu: "+e);

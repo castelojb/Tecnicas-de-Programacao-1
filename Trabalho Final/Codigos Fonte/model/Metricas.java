@@ -1,9 +1,11 @@
 package model;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 public class Metricas extends Csv {
 
     public Metricas(File file){
@@ -20,7 +22,7 @@ public class Metricas extends Csv {
                 elemento = getElemento(linha, coluna);
             }
         } catch (Exception e){
-            System.out.println("Esse CSV tá meio bugado");
+            System.out.println("Esse CSV tá meio bugado" + e);
         }
 
         if (getElemento(linha, coluna).matches("^([+-]?\\d*\\.?\\d*)$")){
@@ -58,7 +60,7 @@ public class Metricas extends Csv {
 
     public String[] elementosSemRepeticao(int coluna){
         int tamanho = this.getNumeroLinhas();
-        Set<String> semRepeticao = new HashSet<String>();
+        Set<String> semRepeticao = new HashSet<>();
         int indice = 0;
         if (coluna < this.getNumeroColunas()){
             for (int linha = 0; linha < tamanho; linha++){
@@ -118,7 +120,6 @@ public class Metricas extends Csv {
                 total++;
             }
         }
-        System.out.println("Total: "+ total);
         return total > 0?  media/total : 0;
     }
 
@@ -376,4 +377,398 @@ public class Metricas extends Csv {
         return maximo;
     }
 
+    public ArrayList<Double[]> covariancia(int coluna1, int coluna2) {
+        ArrayList<Double[]> covariancia = new ArrayList<>();
+        Double[] vetorLinha;
+        int tamanho = this.getNumeroLinhas();
+        double somaColuna1 = 0;
+        double somaColuna2 = 0;
+        double somaColuna3 = 0;
+        double somaColuna4 = 0;
+        double somaColuna5 = 0;
+        double mediaColuna1 = 0;
+        double mediaColuna2 = 0;
+        double mediaColuna3 = 0;
+        double mediaColuna4 = 0;
+        double mediaColuna5 = 0;
+        double total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                somaColuna1 += elementoNumerico(linha, coluna1);
+                somaColuna2 += elementoNumerico(linha, coluna2);
+                total++;
+            }
+        }
+
+        mediaColuna1 = somaColuna1/total;
+        mediaColuna2 = somaColuna2/total;
+
+        if (total != 0){
+            for (int linha = 0; linha < tamanho; linha++) {
+                if (this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                    vetorLinha = new Double[5];
+                    vetorLinha[0] = elementoNumerico(linha, coluna1);
+                    vetorLinha[1] = elementoNumerico(linha, coluna2);
+
+                    vetorLinha[2] = vetorLinha[0] - mediaColuna1;
+                    somaColuna3 += vetorLinha[2];
+                    vetorLinha[3] = vetorLinha[1] - mediaColuna2;
+                    somaColuna4 += vetorLinha[3];
+
+                    vetorLinha[4] = vetorLinha[2]*vetorLinha[3];
+                    somaColuna5 += vetorLinha[4];
+                    covariancia.add(vetorLinha);
+
+                }
+            }
+            vetorLinha = new Double[5];
+            mediaColuna3 = somaColuna3/total;
+            mediaColuna4 = somaColuna4/total;
+            mediaColuna5 = somaColuna5/total;
+
+            vetorLinha[0] = mediaColuna1;
+            vetorLinha[1] = mediaColuna2;
+            vetorLinha[2] = mediaColuna3 < 0.00000000001? 0 : mediaColuna3;
+            vetorLinha[3] = mediaColuna4 < 0.00000000001? 0 : mediaColuna4;
+            vetorLinha[4] = mediaColuna5;
+            covariancia.add(vetorLinha);
+
+            return covariancia;
+        }
+        return null;
+    }
+
+
+    public ArrayList<Double[]> covariancia(int colunaFixa, String nome, int coluna1, int coluna2){
+        ArrayList<Double[]> covariancia = new ArrayList<>();
+        Double[] vetorLinha;
+        int tamanho = this.getNumeroLinhas();
+        double somaColuna1 = 0;
+        double somaColuna2 = 0;
+        double somaColuna3 = 0;
+        double somaColuna4 = 0;
+        double somaColuna5 = 0;
+        double mediaColuna1 = 0;
+        double mediaColuna2 = 0;
+        double mediaColuna3 = 0;
+        double mediaColuna4 = 0;
+        double mediaColuna5 = 0;
+        double total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                somaColuna1 += elementoNumerico(linha, coluna1);
+                somaColuna2 += elementoNumerico(linha, coluna2);
+                total++;
+            }
+        }
+
+        mediaColuna1 = somaColuna1/total;
+        mediaColuna2 = somaColuna2/total;
+
+        if (total != 0){
+            for (int linha = 0; linha < tamanho; linha++) {
+                if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                    vetorLinha = new Double[5];
+                    vetorLinha[0] = elementoNumerico(linha, coluna1);
+                    vetorLinha[1] = elementoNumerico(linha, coluna2);
+
+                    vetorLinha[2] = vetorLinha[0] - mediaColuna1;
+                    somaColuna3 += vetorLinha[2];
+                    vetorLinha[3] = vetorLinha[1] - mediaColuna2;
+                    somaColuna4 += vetorLinha[3];
+
+                    vetorLinha[4] = vetorLinha[2]*vetorLinha[3];
+                    somaColuna5 += vetorLinha[4];
+
+                    covariancia.add(vetorLinha);
+                }
+            }
+            vetorLinha = new Double[5];
+            mediaColuna3 = somaColuna3/total;
+            mediaColuna4 = somaColuna4/total;
+            mediaColuna5 = somaColuna5/total;
+
+            vetorLinha[0] = mediaColuna1;
+            vetorLinha[1] = mediaColuna2;
+            vetorLinha[2] = mediaColuna3 < 0.00000000001? 0 : mediaColuna3;
+            vetorLinha[3] = mediaColuna4 < 0.00000000001? 0 : mediaColuna4;
+            vetorLinha[4] = mediaColuna5;
+            covariancia.add(vetorLinha);
+
+            return covariancia;
+
+        }
+        return null;
+    }
+
+    public HashMap<String, Float[]> frequenciasT(int coluna) {
+        String[] chaves = elementosSemRepeticao(coluna);
+        HashMap<String, Float[]> frequencia = new HashMap<>();
+        int total = 0;
+
+        for(int indice = 0; indice < chaves.length; indice++) {
+            Float[] valor = new Float[2];
+            valor[0] = Float.parseFloat("0");
+            frequencia.put(chaves[indice], valor);
+        }
+
+        int tamanho = this.getNumeroLinhas();
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            Float[] valor = frequencia.get(getElemento(linha, coluna));
+            valor[0] ++;
+            frequencia.put(getElemento(linha, coluna), valor);
+            total++;
+        }
+
+        for (int indice = 0; indice < chaves.length; indice++) {
+            Float[] valor = frequencia.get(chaves[indice]);
+            float repeticao =  valor[0];
+            valor[1] = (repeticao*100) / total;
+            frequencia.put(chaves[indice], valor);
+        }
+        return frequencia;
+
+
+    }
+
+    public HashMap<String, Float[]> frequenciasT(int colunaFixa, String nome, int coluna) {
+        String[] chaves = elementosSemRepeticao(coluna);
+        HashMap<String, Float[]> frequencia = new HashMap<>();
+        int total = 0;
+
+        for(int indice = 0; indice < chaves.length; indice++) {
+            Float[] valor = new Float[2];
+            valor[0] = Float.parseFloat("0");
+            frequencia.put(chaves[indice], valor);
+        }
+
+        int tamanho = this.getNumeroLinhas();
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.getElemento(linha, colunaFixa).matches(nome)){
+                Float[] valor = frequencia.get(getElemento(linha, coluna));
+                valor[0] ++;
+                frequencia.put(getElemento(linha, coluna), valor);
+                total++;
+            }
+        }
+
+        for (int indice = 0; indice < chaves.length; indice++) {
+            Float[] valor = frequencia.get(chaves[indice]);
+            if (valor[0] == 0){
+                frequencia.remove(chaves[indice]);
+            }
+            else {
+                float repeticao =  valor[0];
+                valor[1] = (repeticao*100) / total;
+                frequencia.put(chaves[indice], valor);
+            }
+        }
+        return frequencia;
+    }
+
+    public ArrayList<Double[]> coeficiente(int coluna1, int coluna2){
+        ArrayList<Double[]> coeficiente = new ArrayList<>();
+        Double[] vetorLinha;
+        int tamanho = this.getNumeroLinhas();
+        double somaColuna1 = 0;
+        double somaColuna2 = 0;
+        double somaColuna3 = 0;
+        double somaColuna4 = 0;
+        double somaColuna5 = 0;
+        double mediaColuna1 = 0;
+        double mediaColuna2 = 0;
+        double mediaColuna3 = 0;
+        double mediaColuna4 = 0;
+        double mediaColuna5 = 0;
+        double total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                somaColuna1 += elementoNumerico(linha, coluna1);
+                somaColuna2 += elementoNumerico(linha, coluna2);
+                total++;
+            }
+        }
+
+        if (total != 0){
+            mediaColuna1 = somaColuna1/total;
+            mediaColuna2 = somaColuna2/total;
+
+            for (int linha = 0; linha < tamanho; linha++) {
+                if (this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                    vetorLinha = new Double[5];
+                    vetorLinha[0] = elementoNumerico(linha, coluna1);
+                    vetorLinha[1] = elementoNumerico(linha, coluna2);
+
+                    vetorLinha[2] = Math.pow(vetorLinha[0] - mediaColuna1, 2);
+                    somaColuna3 += vetorLinha[2];
+                    vetorLinha[3] = Math.pow(vetorLinha[1] - mediaColuna2, 2);
+                    somaColuna4 += vetorLinha[3];
+
+                    vetorLinha[4] = (vetorLinha[0] - mediaColuna1)*(vetorLinha[1] - mediaColuna2);
+                    somaColuna5 += vetorLinha[4];
+                    coeficiente.add(vetorLinha);
+
+                }
+            }
+            vetorLinha = new Double[5];
+            mediaColuna3 = somaColuna3/total;
+            mediaColuna4 = somaColuna4/total;
+            mediaColuna5 = somaColuna5/total;
+
+            vetorLinha[0] = mediaColuna1;
+            vetorLinha[1] = mediaColuna2;
+            vetorLinha[2] = mediaColuna3;
+            vetorLinha[3] = mediaColuna4;
+            vetorLinha[4] = mediaColuna5;
+            coeficiente.add(vetorLinha);
+
+            return coeficiente;
+        }
+        return null;
+    }
+
+    public ArrayList<Double[]> coeficiente(int colunaFixa, String nome, int coluna1, int coluna2){
+        ArrayList<Double[]> coeficiente = new ArrayList<>();
+        Double[] vetorLinha;
+        int tamanho = this.getNumeroLinhas();
+        double somaColuna1 = 0;
+        double somaColuna2 = 0;
+        double somaColuna3 = 0;
+        double somaColuna4 = 0;
+        double somaColuna5 = 0;
+        double mediaColuna1 = 0;
+        double mediaColuna2 = 0;
+        double mediaColuna3 = 0;
+        double mediaColuna4 = 0;
+        double mediaColuna5 = 0;
+        double total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                somaColuna1 += elementoNumerico(linha, coluna1);
+                somaColuna2 += elementoNumerico(linha, coluna2);
+                total++;
+            }
+        }
+        if (total != 0){
+
+            mediaColuna1 = somaColuna1/total;
+            mediaColuna2 = somaColuna2/total;
+
+            for (int linha = 0; linha < tamanho; linha++) {
+                if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna1) && this.eNumerico(linha, coluna2)) {
+                    vetorLinha = new Double[5];
+                    vetorLinha[0] = elementoNumerico(linha, coluna1);
+                    vetorLinha[1] = elementoNumerico(linha, coluna2);
+
+                    vetorLinha[2] = Math.pow(vetorLinha[0] - mediaColuna1, 2);
+                    somaColuna3 += vetorLinha[2];
+                    vetorLinha[3] = Math.pow(vetorLinha[1] - mediaColuna2, 2);
+                    somaColuna4 += vetorLinha[3];
+
+                    vetorLinha[4] = (vetorLinha[0] - mediaColuna1)*(vetorLinha[1] - mediaColuna2);
+                    somaColuna5 += vetorLinha[4];
+                    coeficiente.add(vetorLinha);
+
+                }
+            }
+            vetorLinha = new Double[5];
+            mediaColuna3 = somaColuna3/total;
+            mediaColuna4 = somaColuna4/total;
+            mediaColuna5 = somaColuna5/total;
+
+            vetorLinha[0] = mediaColuna1;
+            vetorLinha[1] = mediaColuna2;
+            vetorLinha[2] = mediaColuna3;
+            vetorLinha[3] = mediaColuna4;
+            vetorLinha[4] = mediaColuna5;
+            coeficiente.add(vetorLinha);
+
+            return coeficiente;
+        }
+        return null;
+    }
+
+    public String[][] contingencia(int coluna1, int coluna2){
+        String[] chaves1 = elementosSemRepeticao(coluna1);
+        String[] chaves2 = elementosSemRepeticao(coluna2);
+        HashMap<String, HashMap<String, Integer>> frequencia = new HashMap<>();
+        HashMap<String, Integer> lista;
+        int tamanho1 = 0;
+        int tamanho2 = 0;
+
+        for(int indice1 = 0; indice1 < chaves1.length; indice1++) {
+            lista = new HashMap<>();
+            for (int indice2 = 0; indice2 < chaves2.length; indice2++){
+                lista.put(chaves2[indice2], 0);
+            }
+            frequencia.put(chaves1[indice1], lista);
+        }
+
+        for (int linha = 0; linha < getNumeroLinhas(); linha++){
+            int valor = frequencia.get(getElemento(linha, coluna1)).get(getElemento(linha, coluna2))+1;
+            HashMap<String, Integer> auxiliar = frequencia.get(getElemento(linha, coluna1));
+            auxiliar.put(getElemento(linha, coluna2), valor);
+            frequencia.put(getElemento(linha, coluna1), auxiliar);
+        }
+
+
+        String[][] resultado = new String[chaves1.length][];
+        for (int indice1 = 0; indice1 < chaves1.length; indice1++) {
+            String[] auxiliar = new String[chaves2.length+1];
+            auxiliar[0] = chaves1[indice1];
+            for (int indice2 = 0; indice2 < chaves2.length; indice2++){
+                auxiliar[indice2+1] = String.valueOf(frequencia.get(chaves1[indice1]).get(chaves2[indice2]));
+            }
+            resultado[indice1] = auxiliar;
+        }
+        return resultado;
+    }
+
+    public HashMap<ArrayList<String>, String[][]> contingencia(int colunaFixa, String nome, int coluna1, int coluna2){
+        String[] chaves1 = elementosSemRepeticao(coluna1);
+        String[] chaves2 = elementosSemRepeticao(coluna2);
+        HashMap<String, HashMap<String, Integer>> frequencia = new HashMap<>();
+        HashMap<String, Integer> lista;
+        String[][] resultado = new String[chaves1.length][];
+        ArrayList<String> chavesUsadas1 = new ArrayList<>();
+        ArrayList<String> chavesUsadas2 = new ArrayList<>();
+
+        for(int indice1 = 0; indice1 < chaves1.length; indice1++) {
+            lista = new HashMap<>();
+            for (int indice2 = 0; indice2 < chaves2.length; indice2++){
+                lista.put(chaves2[indice2], 0);
+            }
+            frequencia.put(chaves1[indice1], lista);
+        }
+        for (int linha = 0; linha < getNumeroLinhas(); linha++){
+            if (getElemento(linha, colunaFixa).matches(nome)){
+                chavesUsadas1.add(getElemento(linha, coluna1));
+                chavesUsadas2.add(getElemento(linha, coluna2));
+                int valor = frequencia.get(getElemento(linha, coluna1)).get(getElemento(linha, coluna2))+1;
+                HashMap<String, Integer> auxiliar = frequencia.get(getElemento(linha, coluna1));
+                auxiliar.put(getElemento(linha, coluna2), valor);
+                frequencia.put(getElemento(linha, coluna1), auxiliar);
+            }
+        }
+
+        for (int indice1 = 0; indice1 < chavesUsadas1.size(); indice1++) {
+            String[] auxiliar = new String[chavesUsadas2.size()+1];
+            auxiliar[0] = chavesUsadas1.get(indice1);
+            for (int indice2 = 0; indice2 < chavesUsadas2.size(); indice2++){
+                auxiliar[indice2+1] = String.valueOf(frequencia.get(chavesUsadas1.get(indice1)).get(chavesUsadas2.get(indice2)));
+            }
+            resultado[indice1] = auxiliar;
+        }
+        HashMap<ArrayList<String>, String[][]> result = new HashMap<>();
+        result.put(chavesUsadas2, resultado);
+        System.out.println(chavesUsadas1.size()+"   "+chavesUsadas2.size());
+
+        return result.size() == 0? null : result;
+    }
 }
