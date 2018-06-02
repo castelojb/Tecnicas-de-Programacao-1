@@ -1,7 +1,6 @@
 package view;
 import controller.Controler;
-import javafx.scene.control.ComboBox;
-import layout.Botao;
+import view.layout.Botao;
 
 import javax.swing.*;
 import java.awt.*;

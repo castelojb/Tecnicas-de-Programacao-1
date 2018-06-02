@@ -1,6 +1,7 @@
 package controller;
 
 import model.Metricas;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +9,11 @@ import java.util.Set;
 
 public class Controler{
 	public Metricas dados;
+	public String nomeArquivo;
 
 	public Controler(String arquivo){
 	    try{
+	        nomeArquivo = arquivo;
             File arquivoCSV = new File(arquivo);
             dados = new Metricas(arquivoCSV);
 
@@ -19,6 +22,17 @@ public class Controler{
         }
 	}
 
+	public void setControler(String arquivo){
+        try{
+            nomeArquivo = arquivo;
+            File arquivoCSV = new File(arquivo);
+            dados = new Metricas(arquivoCSV);
+
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
     public  String[] titulosColunas(){
         return dados.titulosColunas();
     }
@@ -26,6 +40,9 @@ public class Controler{
 	public String[] elementosColunaSemRepeticao(String coluna){
 	    return dados.elementosSemRepeticao(dados.indiceCabecalho(coluna));
 
+    }
+    public boolean eColunaNumerica(int coluna){
+	    return dados.colunaNumerica(coluna);
     }
     public String[] colunasNumericas(){
 	    return dados.colunasNumericas();
@@ -233,6 +250,15 @@ public class Controler{
             return retorno;
         }
         return null;
+    }
+
+    public String[][] dadosCSV(){
+	    String[][] csv = new String[dados.getDadosCSV().size()][];
+        ArrayList<String[]> dadosCSV = dados.getDadosCSV();
+        for (int linha = 0; linha < dados.getDadosCSV().size(); linha++){
+            csv[linha] = dadosCSV.get(linha);
+        }
+        return csv;
     }
 }
 

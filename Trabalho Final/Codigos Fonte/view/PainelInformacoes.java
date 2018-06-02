@@ -1,6 +1,6 @@
 package view;
 import controller.Controler;
-import layout.Botao;
+import view.layout.Botao;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -180,26 +180,31 @@ public class PainelInformacoes extends JPanel{
          scartterplot.setMargin(new Insets(0, 50,0 , 50));
          scartterplot.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
 
+         Botao contingenciaG = new Botao("Contingencia");
+         contingenciaG.setMargin(new Insets(0, 50,0 , 50));
+         contingenciaG.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+         contingenciaG.addActionListener(new Graficos(this, "contingencia", true));
+
          //  Tabela
          Botao frequenciasT = new Botao("Frequências");
          frequenciasT.setMargin(new Insets(0, 50,0 , 50));
          frequenciasT.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
-         frequenciasT.addActionListener(new Frequencia(this, "frequenciasT"));
+         frequenciasT.addActionListener(new Tabelas(this, "frequenciasT", false, false, false, true));
 
          Botao contingencia = new Botao("Contingência");
          contingencia.setMargin(new Insets(0, 50,0 , 50));
          contingencia.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
-         contingencia.addActionListener(new Contingencia(this, "contingencia"));
+         contingencia.addActionListener(new Tabelas(this, "contingencia", false, false, true, false));
 
          Botao covariancia = new Botao("Covariância");
          covariancia.setMargin(new Insets(0, 50,0 , 50));
          covariancia.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
-         covariancia.addActionListener(new Covariancia(this, "covariancia"));
+         covariancia.addActionListener(new Tabelas(this, "covariancia", false, true, false, false));
 
          Botao correlacao = new Botao("Coeficiente");
          correlacao.setMargin(new Insets(0, 50,0 , 50));
          correlacao.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
-         correlacao.addActionListener(new Coeficiente(this, "coeficiente"));
+         correlacao.addActionListener(new Tabelas(this, "coeficiente", true, false, false, false));
 
 
          JLabel tituloGrafico = new JLabel("GRÁFICOS", SwingConstants.CENTER);
@@ -216,6 +221,7 @@ public class PainelInformacoes extends JPanel{
          painelLeste.add(frequenciasG);
          painelLeste.add(boxplot);
          painelLeste.add(scartterplot);
+         painelLeste.add(contingenciaG);
 
          painelLeste.add(new JLabel(""));
          painelLeste.add(new JLabel(""));

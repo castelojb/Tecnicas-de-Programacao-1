@@ -1,7 +1,5 @@
 package model;
 
-import org.jfree.util.HashNMap;
-
 import java.util.*;
 import java.io.File;
 
@@ -62,7 +60,7 @@ public class Csv {
 						}
 
 					} else {
-						vetorDaLinha[indice] = valor;
+						vetorDaLinha[indice] = valoresEntreVirgulas[i];
 						indice++;
 					}
 				}
@@ -106,16 +104,5 @@ public class Csv {
     protected String getElemento(int linha, int coluna) {
         return this.dados.get(linha)[coluna];
     }
-/*
-
-    protected String getTituloColuna(int coluna) {
-        return this.cabecalho[coluna];
-    }
-
-    protected String getTituloLinha(int linha) {
-        return this.dados.get(linha)[0];
-    }
-*/
-
 
 }

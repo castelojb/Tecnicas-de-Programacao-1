@@ -1,5 +1,5 @@
 package model;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class Metricas extends Csv {
     }
 
 
-    protected boolean colunaNumerica(int coluna){
+    public boolean colunaNumerica(int coluna){
         int linha = 0;
         try{
             String elemento = getElemento(linha, coluna);
@@ -53,6 +53,9 @@ public class Metricas extends Csv {
         return this.getCabecalhoArray()[coluna];
     }
 
+    public ArrayList<String[]> getDadosCSV(){
+        return this.getDados();
+    }
 
     public String[] titulosColunas(){
         return getCabecalhoArray();

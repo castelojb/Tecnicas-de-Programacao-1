@@ -1,13 +1,12 @@
 package view;
 import controller.Controler;
-import layout.Botao;
+import view.layout.Botao;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 
 
 public class PainelInicial extends JPanel {
