@@ -5,24 +5,25 @@ import model.Metricas;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Controler{
-	public Metricas dados;
-	public String nomeArquivo;
+    private Metricas dados;
+    public String nomeArquivo;
 
-	public Controler(String arquivo){
-	    try{
-	        nomeArquivo = arquivo;
+    public Controler(String arquivo){
+        try{
+            nomeArquivo = arquivo;
             File arquivoCSV = new File(arquivo);
             dados = new Metricas(arquivoCSV);
 
         } catch (Exception e){
             System.out.println(e);
         }
-	}
+    }
 
-	public void setControler(String arquivo){
+    public void setControler(String arquivo){
         try{
             nomeArquivo = arquivo;
             File arquivoCSV = new File(arquivo);
@@ -37,25 +38,24 @@ public class Controler{
         return dados.titulosColunas();
     }
 
-	public String[] elementosColunaSemRepeticao(String coluna){
-	    return dados.elementosSemRepeticao(dados.indiceCabecalho(coluna));
+    public String[] elementosColunaSemRepeticao(String coluna){
+        return dados.elementosSemRepeticao(dados.indiceCabecalho(coluna));
 
     }
     public boolean eColunaNumerica(int coluna){
-	    return dados.colunaNumerica(coluna);
+        return dados.colunaNumerica(coluna);
     }
     public String[] colunasNumericas(){
-	    return dados.colunasNumericas();
+        return dados.colunasNumericas();
     }
 
     public boolean erro(){
-		return this.dados.erroArquivo();
+        return this.dados.erroArquivo();
     }
 
     public String media(String coluna){
-	    return String.valueOf(dados.media(dados.indiceCabecalho(coluna)));
+        return String.valueOf(dados.media(dados.indiceCabecalho(coluna)));
     }
-
     public String media(String colunaFixa, String nome, String coluna){
         return String.valueOf(dados.media(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna)));
     }
@@ -63,10 +63,10 @@ public class Controler{
     public String variancia(String coluna) {
         return String.valueOf(dados.variancia(dados.indiceCabecalho(coluna)));
     }
+
     public String variancia(String colunaFixa, String nome, String coluna) {
         return String.valueOf(dados.variancia(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna)));
     }
-
     public String desvio(String coluna) {
         return String.valueOf(dados.desvio(dados.indiceCabecalho(coluna)));
     }
@@ -87,9 +87,9 @@ public class Controler{
     public String moda(String coluna) {
         double[] valores = dados.moda(dados.indiceCabecalho(coluna));
         String elementos = "";
-	    for (int i = 1; i < valores[0]; i++){
-	        if (i == 1) elementos += String.valueOf(valores[i]);
-	        else elementos += (", " + String.valueOf(valores[i]));
+        for (int i = 1; i < valores[0]; i++){
+            if (i == 1) elementos += String.valueOf(valores[i]);
+            else elementos += (", " + String.valueOf(valores[i]));
         }
         return elementos;
     }
@@ -119,6 +119,23 @@ public class Controler{
 
     public String maximo(String colunaFixa, String nome, String coluna) {
         return String.valueOf(dados.maximo(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna)));
+    }
+
+    public String kurtosis(String coluna){
+        return String.valueOf(dados.kurtosis(dados.indiceCabecalho(coluna)));
+    }
+
+    public String kurtosis(String colunaFixa, String nome, String coluna){
+        return String.valueOf(dados.kurtosis(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna)));
+    }
+
+
+    public String skewness(String coluna){
+        return String.valueOf(dados.skewness(dados.indiceCabecalho(coluna)));
+    }
+
+    public String skewness(String colunaFixa, String nome, String coluna){
+        return String.valueOf(dados.skewness(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna)));
     }
 
     public String[][] covariancia(String coluna1, String coluna2){
@@ -154,7 +171,7 @@ public class Controler{
 
     }
 
-    public String[][] frequenciasT(String coluna){
+    public String[][] frequencias(String coluna){
         HashMap<String, Float[]> resultado = dados.frequenciasT(dados.indiceCabecalho(coluna));
         String[][] frequencias = new String[resultado.size()][3];
         String[] chaves = dados.elementosSemRepeticao(dados.indiceCabecalho(coluna));
@@ -168,7 +185,7 @@ public class Controler{
         return frequencias;
     }
 
-    public String[][] frequenciasT(String colunaFixa, String nome, String coluna){
+    public String[][] frequencias(String colunaFixa, String nome, String coluna){
         HashMap<String, Float[]> resultado = dados.frequenciasT(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna));
         if (resultado != null){
             String[][] frequencias = new String[resultado.size()][3];
@@ -225,35 +242,74 @@ public class Controler{
     }
 
     public String[][] contingencia(String coluna1, String coluna2){
-	    return dados.contingencia(dados.indiceCabecalho(coluna1), dados.indiceCabecalho(coluna2));
+        return dados.contingencia(dados.indiceCabecalho(coluna1), dados.indiceCabecalho(coluna2));
     }
 
     public String[][] contingencia(String colunaFixa, String nome, String coluna1, String coluna2){
-        HashMap<ArrayList<String>, String[][]> resultado = dados.contingencia(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna1), dados.indiceCabecalho(coluna2));
-        if (resultado != null){
-            Set<ArrayList<String>> cabaca = resultado.keySet();
-            ArrayList<String> auxiliar = new ArrayList<>();
-            for (ArrayList<String> elemento : cabaca){
-                auxiliar = elemento;
-            }
+        String[][] resultado = dados.contingencia(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna1), dados.indiceCabecalho(coluna2));
+        return resultado;
+    }
 
-            String[] valor = new String[auxiliar.size()];
-            for (int indice = 0; indice < auxiliar.size(); indice++){
-                valor[indice] = auxiliar.get(indice);
-            }
-            String[][] retorno = new String[resultado.get(auxiliar).length+1][];
-            retorno[0] = valor;
+    public String[][] scatterplot(String coluna1, String coluna2){
+        String[][] resultado = new String[2][];
+        resultado[0] = dados.getElementosColuna(dados.indiceCabecalho(coluna1));
+        resultado[1] = dados.getElementosColuna(dados.indiceCabecalho(coluna2));
+        return resultado;
+    }
 
-            System.arraycopy(resultado.get(auxiliar), 0, retorno, 1, resultado.get(auxiliar).length);
-            System.out.println(retorno[0].length+"      "+retorno.length);
+    public String[][] scatterplot(String colunaFixa, String nome, String coluna1, String coluna2){
+        String[][] valor = dados.scatterplot(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna1), dados.indiceCabecalho(coluna2));
+        String[][] resultado = new String[2][Integer.parseInt(valor[2][0])];
 
-            return retorno;
+        for (int linha = 0; linha < Integer.parseInt(valor[2][0]); linha++){
+            resultado[0][linha] = valor[0][linha];
+            resultado[1][linha] = valor[1][linha];
         }
-        return null;
+
+        return resultado;
+    }
+
+    public String[][] histograma(String coluna){
+        String[][] resultado = new String[2][];
+        resultado[0] = dados.getElementosColuna(dados.indiceCabecalho(coluna));
+        String[] valores = new String[2];
+        valores[0] = String.valueOf(dados.minimo(dados.indiceCabecalho(coluna)));
+        valores[1] = String.valueOf(dados.maximo(dados.indiceCabecalho(coluna)));
+
+        resultado[1] = valores;
+        return resultado;
+    }
+
+    public String[][] histograma(String colunaFixa, String nome, String coluna){
+        double[][] valor = dados.histograma(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna));
+        String[][] resultado = new String[2][(int)valor[1][0]];
+        for (int linha = 0; linha < valor[1][0]; linha++){
+            resultado[0][linha] = String.valueOf(valor[0][linha]);
+        }
+
+        String[] valores = new String[2];
+        valores[0] = String.valueOf(valor[2][0]);
+        valores[1] = String.valueOf(valor[2][1]);
+
+        resultado[1] = valores;
+        return resultado;
+    }
+
+    public String[][] boxplot(String coluna){
+        String[][] resultado = new String[1][];
+        resultado[0] = dados.getElementosColuna(dados.indiceCabecalho(coluna));
+        return resultado;
+    }
+
+    public String[][] boxplot(String colunaFixa, String nome, String coluna){
+        String[][] auxiliar = histograma(colunaFixa, nome, coluna);
+        String[][] resultado = new String[1][];
+        resultado[0] = auxiliar[0];
+        return resultado;
     }
 
     public String[][] dadosCSV(){
-	    String[][] csv = new String[dados.getDadosCSV().size()][];
+        String[][] csv = new String[dados.getDadosCSV().size()][];
         ArrayList<String[]> dadosCSV = dados.getDadosCSV();
         for (int linha = 0; linha < dados.getDadosCSV().size(); linha++){
             csv[linha] = dadosCSV.get(linha);

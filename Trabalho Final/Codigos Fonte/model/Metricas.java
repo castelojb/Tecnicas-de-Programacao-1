@@ -1,5 +1,7 @@
 package model;
 
+import com.sun.javafx.collections.SetListenerHelper;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -100,6 +102,13 @@ public class Metricas extends Csv {
         return elementos;
     }
 
+    public String[] getElementosColuna(int coluna){
+        String[] resultado = new String[getNumeroLinhas()];
+        for (int linha = 0; linha < getNumeroLinhas(); linha++){
+            resultado[linha] = getElemento(linha, coluna);
+        }
+        return resultado;
+    }
     public double media(int coluna) {
         double media = 0;
         int tamanho = this.getNumeroLinhas();
@@ -379,6 +388,79 @@ public class Metricas extends Csv {
 
         return maximo;
     }
+
+    public double kurtosis (int coluna) {
+        double media = media(coluna);
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        int tamanho = getNumeroLinhas();
+        int total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (eNumerico(linha, coluna)) {
+                somatorio1 += (Math.pow((elementoNumerico(linha, coluna) - media), 4));
+                somatorio2 += (Math.pow((elementoNumerico(linha, coluna) - media), 2));
+                total++;
+            }
+        }
+
+        return (somatorio1*total)/(Math.pow(somatorio2, 2));
+    }
+
+    public double kurtosis (int colunaFixa, String nome, int coluna) {
+        double media = media(colunaFixa, nome, coluna);
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        int tamanho = getNumeroLinhas();
+        int total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.getElemento(linha, colunaFixa).matches(nome) && eNumerico(linha, coluna)) {
+                somatorio1 += (Math.pow((elementoNumerico(linha, coluna) - media), 4));
+                somatorio2 += (Math.pow((elementoNumerico(linha, coluna) - media), 2));
+                total++;
+            }
+        }
+
+        return (somatorio1*total)/(Math.pow(somatorio2, 2));
+    }
+
+    public double skewness (int coluna) {
+        double media = media(coluna);
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        int tamanho = getNumeroLinhas();
+        int total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (eNumerico(linha, coluna)) {
+                somatorio1 += (Math.pow(elementoNumerico(linha, coluna) - media, 3));
+                somatorio2 += (Math.pow(elementoNumerico(linha, coluna) - media, 2));
+                total++;
+            }
+        }
+
+        return (somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
+    }
+
+    public double skewness (int colunaFixa, String nome, int coluna) {
+        double media = media(colunaFixa, nome, coluna);
+        double somatorio1 = 0;
+        double somatorio2 = 0;
+        int tamanho = getNumeroLinhas();
+        int total = 0;
+
+        for (int linha = 0; linha < tamanho; linha++) {
+            if (this.getElemento(linha, colunaFixa).matches(nome) && eNumerico(linha, coluna)) {
+                somatorio1 += (Math.pow(elementoNumerico(linha, coluna) - media, 3));
+                somatorio2 += (Math.pow(elementoNumerico(linha, coluna) - media, 2));
+                total++;
+            }
+        }
+
+        return (somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
+    }
+
 
     public ArrayList<Double[]> covariancia(int coluna1, int coluna2) {
         ArrayList<Double[]> covariancia = new ArrayList<>();
@@ -733,14 +815,13 @@ public class Metricas extends Csv {
         return resultado;
     }
 
-    public HashMap<ArrayList<String>, String[][]> contingencia(int colunaFixa, String nome, int coluna1, int coluna2){
+    public String[][] contingencia(int colunaFixa, String nome, int coluna1, int coluna2){
         String[] chaves1 = elementosSemRepeticao(coluna1);
         String[] chaves2 = elementosSemRepeticao(coluna2);
         HashMap<String, HashMap<String, Integer>> frequencia = new HashMap<>();
         HashMap<String, Integer> lista;
-        String[][] resultado = new String[chaves1.length][];
-        ArrayList<String> chavesUsadas1 = new ArrayList<>();
-        ArrayList<String> chavesUsadas2 = new ArrayList<>();
+        int tamanho1 = 0;
+        int tamanho2 = 0;
 
         for(int indice1 = 0; indice1 < chaves1.length; indice1++) {
             lista = new HashMap<>();
@@ -749,10 +830,9 @@ public class Metricas extends Csv {
             }
             frequencia.put(chaves1[indice1], lista);
         }
+
         for (int linha = 0; linha < getNumeroLinhas(); linha++){
             if (getElemento(linha, colunaFixa).matches(nome)){
-                chavesUsadas1.add(getElemento(linha, coluna1));
-                chavesUsadas2.add(getElemento(linha, coluna2));
                 int valor = frequencia.get(getElemento(linha, coluna1)).get(getElemento(linha, coluna2))+1;
                 HashMap<String, Integer> auxiliar = frequencia.get(getElemento(linha, coluna1));
                 auxiliar.put(getElemento(linha, coluna2), valor);
@@ -760,18 +840,79 @@ public class Metricas extends Csv {
             }
         }
 
-        for (int indice1 = 0; indice1 < chavesUsadas1.size(); indice1++) {
-            String[] auxiliar = new String[chavesUsadas2.size()+1];
-            auxiliar[0] = chavesUsadas1.get(indice1);
-            for (int indice2 = 0; indice2 < chavesUsadas2.size(); indice2++){
-                auxiliar[indice2+1] = String.valueOf(frequencia.get(chavesUsadas1.get(indice1)).get(chavesUsadas2.get(indice2)));
+
+        String[][] resultado = new String[chaves1.length][];
+        for (int indice1 = 0; indice1 < chaves1.length; indice1++) {
+            String[] auxiliar = new String[chaves2.length+1];
+            auxiliar[0] = chaves1[indice1];
+            for (int indice2 = 0; indice2 < chaves2.length; indice2++){
+                auxiliar[indice2+1] = String.valueOf(frequencia.get(chaves1[indice1]).get(chaves2[indice2]));
             }
             resultado[indice1] = auxiliar;
         }
-        HashMap<ArrayList<String>, String[][]> result = new HashMap<>();
-        result.put(chavesUsadas2, resultado);
-        System.out.println(chavesUsadas1.size()+"   "+chavesUsadas2.size());
-
-        return result.size() == 0? null : result;
+        return resultado;
     }
+
+    public double[][] histograma(int colunaFixa, String nome, int coluna){
+        String[] valores = getElementosColuna(coluna);
+        double[][] resultado = new double[3][];
+        double[] auxiliar = new  double[valores.length];
+        double minimo = 0;
+        double maximo = 0;
+        int tamanho = 0;
+        for (int linha = 0; linha < valores.length; linha++){
+            if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna)){
+                auxiliar[tamanho] = elementoNumerico(linha, coluna);
+                if (tamanho == 0){
+                    minimo = auxiliar[tamanho];
+                    maximo = auxiliar[tamanho];
+                } else {
+                    if (auxiliar[tamanho] > maximo) maximo = auxiliar[tamanho];
+                    else if (auxiliar[tamanho] < minimo) minimo = auxiliar[tamanho];
+                }
+                tamanho++;
+            }
+        }
+
+        if (tamanho == 0) return null;
+        double[] extremos = new double[2];
+        extremos[0] = minimo;
+        extremos[1] = maximo;
+
+        double[] tam = new double[1];
+        tam[0] = tamanho;
+
+        resultado[0] = auxiliar;
+        resultado[1] = tam;
+        resultado[2] = extremos;
+        return resultado;
+    }
+
+    public String[][] scatterplot(int colunaFixa, String nome, int coluna1, int coluna2){
+        String[][] resultado = new String[3][];
+        String elementosColuna1Fixo[] = getElementosColuna(coluna1);
+        String elementosColuna2Fixo[] = getElementosColuna(coluna2);
+
+        String[] coluna1Certo = new String[elementosColuna1Fixo.length];
+        String[] coluna2Certo = new String[elementosColuna2Fixo.length];
+        int cont = 0;
+        for (int linha = 0; linha < elementosColuna1Fixo.length; linha++){
+            if (this.getElemento(linha, colunaFixa).matches(nome)){
+                coluna1Certo[cont] = elementosColuna1Fixo[linha];
+                coluna2Certo[cont] = elementosColuna2Fixo[linha];
+                cont++;
+            }
+        }
+
+        if (cont == 0) return null;
+
+        String[] tamanho = new String[1];
+        tamanho[0] = String.valueOf(cont);
+
+        resultado[0] = coluna1Certo;
+        resultado[1] = coluna2Certo;
+        resultado[2] = tamanho;
+        return resultado;
+    }
+
 }

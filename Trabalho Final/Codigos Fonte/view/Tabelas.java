@@ -2,6 +2,8 @@ package view;
 import com.sun.org.apache.regexp.internal.RE;
 import controller.Controler;
 import view.layout.Botao;
+import view.layout.Cores;
+import view.layout.Fontes;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,11 +15,6 @@ import java.awt.event.ItemListener;
 import java.lang.reflect.Method;
 
 public class Tabelas implements ActionListener{
-    private Color corFundo = new Color(10, 10, 10);
-    private Color corBotaoBuscar = new Color(10, 50, 10);
-    private Color corBotaoAnalisar = new Color(5, 50, 100);
-    private Color corBranca = new Color(255, 255, 255);
-    private Color corTeste = new Color(255, 0, 255);
     private Font fonteBotao = new Font("SansSerif", Font.BOLD, 25);
 
     //CONSTRUTOR
@@ -29,7 +26,7 @@ public class Tabelas implements ActionListener{
 
     boolean escolha = false;
     String colunaFixa = "Nenhum";
-    String elementoFixo;
+    String elementoFixo = "Nenhum";
     String colunaCalculavel1;
     String colunaCalculavel2;
     int colunaMedia;
@@ -47,28 +44,29 @@ public class Tabelas implements ActionListener{
     JPanel calcular;
 
 
-    Tabelas(PainelInformacoes informacoes, String nome, boolean coeficiente, boolean covariancia, boolean contingencia, boolean frequencias){
+    Tabelas(PainelInformacoes informacoes, String nome){
         this.controlador = informacoes.getControlador();
         this.informacoes = informacoes;
         this.nome = nome;
-        this.coeficiente = coeficiente;
-        this.covariancia = covariancia;
-        this.contingencia = contingencia;
-        this.frequencias = frequencias;
-
+        if (nome.equals("coeficiente")) this.coeficiente = true;
+        else if (nome.equals("covariancia")) this.covariancia = true;
+        else if (nome.equals("contingencia")) this.contingencia = true;
+        else if (nome.equals("frequencias")) this.frequencias = true;
     }
 
     public void actionPerformed(ActionEvent evento){
         painel = new JPanel();
-        painel.setPreferredSize(new Dimension(740, 650));
+        painel.setPreferredSize(new Dimension(780, 680));
         painel.setLayout(new BorderLayout());
 
         JPanel painelBotao = new JPanel();
         painelBotao.setLayout(new GridBagLayout());
+        painelBotao.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
 
         JPanel escolhas = new JPanel();
         setPainelEscolhas(escolhas);
+        escolhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 
         JPanel centro = new JPanel();
         centro.setLayout(new BorderLayout());
@@ -77,19 +75,35 @@ public class Tabelas implements ActionListener{
         calcular.setLayout(new BorderLayout());
         calcular.setPreferredSize(new Dimension(700, 520));
 
+        //CABECALHO
         JPanel cabecalho = new JPanel();
+        JPanel cabecalhoTitulo = new JPanel();
+        JPanel cabecalhoInformacao = new JPanel();
+
+        cabecalhoTitulo.setBackground(Cores.corVerde);
+
         cabecalho.setLayout(new BorderLayout());
-        JLabel titulo = new JLabel("  "+nome);
-        cabecalho.add(titulo, BorderLayout.WEST);
-        Icon fechar = new ImageIcon(getClass().getResource("fechar.png"));
+        cabecalhoTitulo.setLayout(new BorderLayout());
+        cabecalhoInformacao.setLayout(new FlowLayout());
+
+        JLabel tituloGeral = new JLabel(setTituloGeral());
+        tituloGeral.setFont(Fontes.TITULO);
+        tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
+
+        cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
+        Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
         Botao botaoFechar = new Botao(fechar);
         botaoFechar.setContentAreaFilled(false);
         botaoFechar.addActionListener(new Fechar(painel));
-        cabecalho.add(botaoFechar, BorderLayout.EAST);
+        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+
+        cabecalhoInformacao.add(new JLabel(setInformacao()));
+        cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);
+        cabecalho.add(cabecalhoInformacao, BorderLayout.CENTER);
         painel.add(cabecalho, BorderLayout.NORTH);
 
         //pega a coluna de escolha de media
-        JLabel tituloColunaFixa = new JLabel("     Coluna fixa:    ");
+        JLabel tituloColunaFixa = new JLabel("<html>OPCIONAL - caso queira,<BR/>escolha uma coluna fixa</html>");
         String[] colunaFixa = new String[controlador.titulosColunas().length+1];
         colunaFixa[0] = "Nenhum";
         System.arraycopy(controlador.titulosColunas(), 0, colunaFixa, 1, controlador.titulosColunas().length);
@@ -98,50 +112,46 @@ public class Tabelas implements ActionListener{
         setColunaFixa.setMaximumRowCount(4);
         setColunaFixa.addItemListener(new ColunaFixa());
 
-        JLabel tituloElementoFixo = new JLabel("     Elemento fixo:    ");
+        JLabel tituloElementoFixo = new JLabel("<html>OPCIONAL - caso queira,<BR/>escolha um elemento fixo</html>");
         setElementoFixo = new JComboBox(nenhum);
         setElementoFixo.setMaximumRowCount(4);
         setElementoFixo.addItemListener(new ElementoFixo());
 
-        JLabel tituloColunaCalculavel1 = new JLabel("     Média em relação:        ");
+        JLabel tituloColunaCalculavel1 = new JLabel(setInformacaoVariavel());
         String[] colunaCalculavel1 = colunasCalculaveis();
+        this.colunaCalculavel1 = colunaCalculavel1[0];
         setColunaCalculavel1 = new JComboBox(colunaCalculavel1);
         setColunaCalculavel1.setMaximumRowCount(4);
         setColunaCalculavel1.addItemListener(new ColunaCalculavel1());
 
         JLabel tituloColunaCalculavel2 = new JLabel();
         if (coeficiente || covariancia || contingencia){
-            tituloColunaCalculavel2 = new JLabel("     Média em relação:        ");
+            tituloColunaCalculavel2 = new JLabel("EM RELAÇÃO:");
             String[] colunaCalculavel2 = colunasCalculaveis();
+            this.colunaCalculavel2 = colunaCalculavel2[0];
             setColunaCalculavel2 = new JComboBox(colunaCalculavel2);
             setColunaCalculavel2.setMaximumRowCount(4);
             setColunaCalculavel2.addItemListener(new ColunaCalculavel2());
 
         }
 
-        escolhas.add(tituloColunaFixa);
-        escolhas.add(tituloElementoFixo);
         escolhas.add(tituloColunaCalculavel1);
         if (coeficiente || covariancia || contingencia) escolhas.add(tituloColunaCalculavel2);
+        escolhas.add(tituloColunaFixa);
+        escolhas.add(tituloElementoFixo);
 
 
-        escolhas.add(setColunaFixa);
-        escolhas.add(setElementoFixo);
         escolhas.add(setColunaCalculavel1);
         if (coeficiente || covariancia || contingencia) escolhas.add(setColunaCalculavel2);
+        escolhas.add(setColunaFixa);
+        escolhas.add(setElementoFixo);
 
         Botao botaoCalcular = new Botao("CALCULAR");
         botaoCalcular.setMargin(new Insets(0, 0,0 , 0));
-        botaoCalcular.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+        botaoCalcular.configurarFonteCorFundo(Fontes.TITULO, Cores.corBranca, Cores.azulEscuro2);
         botaoCalcular.addActionListener(new Calcular());
 
-        //Só aparece quando aperta o botao calcular
-        valor = new JTable();
-        JScrollPane scrollPane = new JScrollPane (valor);
-        calcular.add(scrollPane);
-
         painelBotao.add(botaoCalcular, gbc);
-        painelBotao.setBackground(corTeste);
 
         centro.add(escolhas, BorderLayout.CENTER);
         centro.add(painelBotao, BorderLayout.EAST);
@@ -149,15 +159,15 @@ public class Tabelas implements ActionListener{
         painel.add(centro, BorderLayout.CENTER);
         painel.add(calcular, BorderLayout.SOUTH);
 
-        informacoes.adicionaPainelCentral(painel);
+        informacoes.adicionaPainelCentral(painel, 690);
 
     }
 
     void setPainelEscolhas(JPanel escolhas){
         if (frequencias){
-            escolhas.setLayout(new GridLayout(2, 3, 10, 1));
+            escolhas.setLayout(new GridLayout(2, 3, 5, 5));
         } else {
-            escolhas.setLayout(new GridLayout(2, 4, 10, 1));
+            escolhas.setLayout(new GridLayout(2, 4, 5, 5));
         }
     }
 
@@ -167,6 +177,42 @@ public class Tabelas implements ActionListener{
         }
         return controlador.titulosColunas();
     }
+
+    String setTituloGeral(){
+        String tituloGeral = "";
+        String espaco = "  ";
+        if (nome.matches("frequencias")) tituloGeral = "CALCULAR TABELA DE FREQUÊNCIAS";
+        if (nome.matches("contingencia")) tituloGeral = "CALCULAR TABELA DE CONTINGÊNCIA";
+        if (nome.matches("covariancia")) tituloGeral = "CALCULAR TABELA DE COVARIÂNCIA";
+        if (nome.matches("coeficiente")) tituloGeral = "ALCULAR TABELA DE COEFICIENTE DE PEARSON";
+
+        return espaco + tituloGeral;
+    }
+
+    String setInformacao(){
+        String tituloGeral = "";
+        if (nome.matches("frequencias")) tituloGeral = "a tabela de frequências";
+        if (nome.matches("contingencia")) tituloGeral = "a tabela de contingência";
+        if (nome.matches("covariancia")) tituloGeral = "a tabela de covariancia";
+        if (nome.matches("coeficiente")) tituloGeral = "o coeficiente de variação de Pearson";
+
+        tituloGeral = "<html><center>É possível calcular "+tituloGeral+" selecionando todas as linhas de uma coluna" +
+                "<br/>ou realizar o cálculo escolhendo apenas as linhas que possuem um elemento específico em comum</center></html>";
+        return tituloGeral;
+    }
+
+    String setInformacaoVariavel(){
+        String tituloGeral = "";
+        if (nome.matches("frequencias")) tituloGeral = "FREQUÊNCIA";
+        if (nome.matches("contingencia")) tituloGeral = "CONTINGENCIA";
+        if (nome.matches("covariancia")) tituloGeral = "COVARIÂNCIA";
+        if (nome.matches("coeficiente")) tituloGeral = "COEFICIENTE DE VARIAÇÃO";
+
+        return tituloGeral+" DE:";
+    }
+
+
+
     public class ColunaFixa implements ItemListener {
         public void itemStateChanged(ItemEvent evento) {
             if (evento.getStateChange() == ItemEvent.SELECTED){
@@ -221,7 +267,7 @@ public class Tabelas implements ActionListener{
             this.painel = painel;
         }
         public void actionPerformed(ActionEvent evento) {
-            informacoes.eliminaPainelCentral(this.painel);
+            informacoes.eliminaPainelCentral(this.painel, 690);
         }
     }
 
@@ -231,7 +277,6 @@ public class Tabelas implements ActionListener{
             String[] titulo = tituloTabela();
             String[][] resultado = calcularMetrica();
             String tituloCalcular = "";
-
             if (resultado != null){
                 tituloCalcular += tituloCalcular(resultado);
                 valor = new JTable(resultado, titulo){
@@ -243,10 +288,12 @@ public class Tabelas implements ActionListener{
                 valor.setFillsViewportHeight(true);
                 valor.getTableHeader().setReorderingAllowed(false);
                 valor.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                valor.setPreferredScrollableViewportSize(valor.getPreferredSize());
+                valor.setFillsViewportHeight(true);
                 JScrollPane scrollPane = new JScrollPane (valor, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 scrollPane.setPreferredSize(new Dimension( 700,500));
                 calcular.removeAll();
-                calcular.add(scrollPane, BorderLayout.NORTH);
+                calcular.add(scrollPane, BorderLayout.CENTER);
 
             }
             else {
@@ -279,6 +326,7 @@ public class Tabelas implements ActionListener{
 
             }
             else{
+                System.out.println("foi aqui");
                 String[] titulo = new String[controlador.elementosColunaSemRepeticao(colunaCalculavel2).length+1];
                 titulo[0] = colunaCalculavel1;
                 System.arraycopy(controlador.elementosColunaSemRepeticao(colunaCalculavel2), 0, titulo, 1, controlador.elementosColunaSemRepeticao(colunaCalculavel2).length);
@@ -321,8 +369,9 @@ public class Tabelas implements ActionListener{
         }
 
         String tituloCalcular(String[][] resultado){
-            if (coeficiente) return Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])) == 0? "COEFICIENTE DE PEARSON = 0" : "COEFICIENTE DE PEARSON = "+String.valueOf((Double.parseDouble(resultado[resultado.length-1][4]))/Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])));
-            if (covariancia) return "COVARIÂNCIA: "+resultado[resultado.length-1][4];
+            if (coeficiente) return Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])) == 0? "COEFICIENTE DE PEARSON = 0"
+                    : "COEFICIENTE DE PEARSON = "+String.valueOf((Double.parseDouble(resultado[resultado.length-1][4]))/Math.sqrt(Double.parseDouble(resultado[resultado.length-1][2])*Double.parseDouble(resultado[resultado.length-1][3])));
+            if (covariancia) return "VALOR DA COVARIÂNCIA: "+resultado[resultado.length-1][4];
             if (contingencia) return "TABELA DE CONTINGENCIA: ";
             else return "TABELA DE FREQUENCIA";
         }

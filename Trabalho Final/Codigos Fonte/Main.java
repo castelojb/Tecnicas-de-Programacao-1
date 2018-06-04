@@ -1,5 +1,4 @@
 import view.Janela;
-import controller.Controler;
 import view.PainelInicial;
 
 public class Main{

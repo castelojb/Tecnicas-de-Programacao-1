@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 import view.layout.Botao;
 
 import javax.swing.*;
@@ -18,15 +17,11 @@ import java.util.EmptyStackException;
 
 
 import controller.Controler;
+import view.layout.Cores;
+import view.layout.Fontes;
 
 
 public class Editar implements ActionListener{
-    private Color corFundo = new Color(10, 10, 10);
-    private Color corBotaoBuscar = new Color(10, 50, 10);
-    private Color corBotaoAnalisar = new Color(5, 50, 100);
-    private Color corBranca = new Color(255, 255, 255);
-    private Color corTeste = new Color(255, 0, 255);
-    Font fonteBotao = new Font("SansSerif", Font.BOLD, 25);
 
     private Controler controlador;
     private PainelInformacoes informacoes;
@@ -47,7 +42,7 @@ public class Editar implements ActionListener{
     }
     public void actionPerformed(ActionEvent evento) {
         painel = new JPanel();
-        painel.setPreferredSize(new Dimension(740, 900));
+        painel.setPreferredSize(new Dimension(780, 670));
         painel.setLayout(new BorderLayout());
 
         centro = new JPanel();
@@ -59,8 +54,12 @@ public class Editar implements ActionListener{
         JPanel cabecalho = new JPanel();
         cabecalho.setLayout(new BorderLayout());
         JLabel titulo = new JLabel("  "+nome);
+        titulo.setFont(Fontes.TITULO);
+        titulo.setForeground(Cores.corBotaoAzulEscuro);
+
+        cabecalho.setBackground(Cores.corVerde);
         cabecalho.add(titulo, BorderLayout.WEST);
-        Icon fechar = new ImageIcon(getClass().getResource("fechar.png"));
+        Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
         Botao botaoFechar = new Botao(fechar);
         botaoFechar.setContentAreaFilled(false);
         botaoFechar.addActionListener(new Fechar(painel));
@@ -89,23 +88,23 @@ public class Editar implements ActionListener{
 
         Botao botaoSalvar = new Botao("SALVAR");
         botaoSalvar.setMargin(new Insets(0, 0,0 , 0));
-        botaoSalvar.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+        botaoSalvar.configurarFonteCorFundo(Fontes.TITULO, Cores.corBranca, Cores.azulEscuro2);
         botaoSalvar.addActionListener(new Salvar());
 
         Botao botaoSalvarComo = new Botao("SALVAR COMO");
         botaoSalvarComo.setMargin(new Insets(0, 0,0 , 0));
-        botaoSalvarComo.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+        botaoSalvarComo.configurarFonteCorFundo(Fontes.TITULO, Cores.corBranca, Cores.corBotaoAzulEscuro);
         botaoSalvarComo.addActionListener(new SalvarComo());
 
 
         //Só aparece quando aperta o botao calcular
-        JLabel resultado = new JLabel("     RESULTADO");
+
         salvar.add(botaoSalvar);
         salvar.add(botaoSalvarComo);
         painel.add(centro, BorderLayout.CENTER);
         painel.add(salvar, BorderLayout.SOUTH);
 
-        informacoes.adicionaPainelCentral(painel);
+        informacoes.adicionaPainelCentral(painel, 680);
 
     }
 
@@ -115,7 +114,7 @@ public class Editar implements ActionListener{
             this.painel = painel;
         }
         public void actionPerformed(ActionEvent evento) {
-            informacoes.eliminaPainelCentral(this.painel);
+            informacoes.eliminaPainelCentral(this.painel, 680);
         }
     }
 
@@ -186,7 +185,7 @@ public class Editar implements ActionListener{
 
                 lines.add(linhaCSVs);
             }
-        return lines;
+            return lines;
 
         } catch (Exception e){
             System.out.println("Não deu " + e);
@@ -201,8 +200,8 @@ public class Editar implements ActionListener{
             Path file = Paths.get(onde);
             Files.write(file, arquivo, Charset.defaultCharset());
             controlador.setControler(controlador.nomeArquivo);
-            Icon iconeOK = new ImageIcon(getClass().getResource("ok.png"));
-            JOptionPane.showMessageDialog (new JFrame(), "CSV atualizado com sucesso", "FEITO", JOptionPane.INFORMATION_MESSAGE, iconeOK);
+            Icon iconeOK = new ImageIcon(getClass().getResource("/imagens\\ok.png"));
+            JOptionPane.showMessageDialog (new JFrame(), "Arquivo salvo com sucesso!", "", JOptionPane.INFORMATION_MESSAGE, iconeOK);
 
         } catch (Exception e){
             System.out.println("Não deu"+e);

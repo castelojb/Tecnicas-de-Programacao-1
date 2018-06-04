@@ -1,34 +1,29 @@
 package view;
 
 import controller.Controler;
+import view.layout.Cores;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.border.Border;
-import java.io. *;
-
 public class Janela extends JFrame{
-    protected Controler controlador;
-    private Color corFundo = new Color(10, 10, 10);
+    private Controler controlador;
 
     public Janela(){
         super("Analisador de Dados CSV");
         configuracoesPadrao();
     }
 
-    public void setControlador(Controler controlador){
+    void setControlador(Controler controlador){
         this.controlador = controlador;
     }
-    public Controler getControlador(){
+
+    Controler getControlador(){
         return this.controlador;
     }
-    void configuracoesPadrao(){
+
+    private void configuracoesPadrao(){
         //     CONFIGURAÇÕES PADRÃO      //
         //SET BORDER LAYOUT
         BorderLayout layout = new BorderLayout();
@@ -38,14 +33,14 @@ public class Janela extends JFrame{
         //TAMANHO DA TELA
         this.setSize(900, 700);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.getContentPane().setBackground(corFundo);
+        this.getContentPane().setBackground(Cores.rosaClaro2);
 
         //BOTÃO FECHAR FUNCIONANDO
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         try {
             //ICONE BONITINHO
-            URL url = ClassLoader.getSystemResource("icone1.png");
+            URL url = ClassLoader.getSystemResource("imagens\\icone.png");
             Image imagemIcone = Toolkit.getDefaultToolkit().getImage(url);
             this.setIconImage(imagemIcone);
 
@@ -66,9 +61,6 @@ public class Janela extends JFrame{
         rolagem.setComponentZOrder(rolagem.getViewport(), 1);
         rolagem.getVerticalScrollBar().setOpaque(false);
         rolagem.setViewportBorder(null);
-     //   rolagem.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
-     //   rolagem.getHorizontalScrollBar().setPreferredSize(new Dimension(10, 10));
-    //    rolagem.getHorizontalScrollBar().setPreferredSize(new Dimension(0,0));
         box.add(rolagem);
 
         this.add(box);

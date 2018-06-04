@@ -1,12 +1,16 @@
 package view;
 import controller.Controler;
 import view.layout.Botao;
+import view.layout.Cores;
+import view.layout.Fontes;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 
 public class PainelInicial extends JPanel {
@@ -17,12 +21,6 @@ public class PainelInicial extends JPanel {
     private JPanel painelInferir = new JPanel();
     private JPanel painelTexto = new JPanel();
     private JPanel painelBotao = new JPanel();
-
-    private Color corFundo = new Color(10, 10, 10);
-    private Color corBotaoBuscar = new Color(10, 50, 10);
-    private Color corBotaoAnalisar = new Color(5, 50, 100);
-    private Color corBranca = new Color(255, 255, 255);
-
 
     public PainelInicial(Janela janela){
         super();
@@ -45,9 +43,10 @@ public class PainelInicial extends JPanel {
 
         try {
             //IMAGEM DA TELA DE INICIO
-            Icon imagemTitulo = new ImageIcon(getClass().getResource("paginaInicial.png"));
+            Icon imagemTitulo = new ImageIcon(getClass().getResource("/imagens\\inicial.png"));
             JLabel titulo = new JLabel(imagemTitulo, SwingConstants.CENTER);
             painelSuperior.add(titulo, BorderLayout.CENTER);
+            painelSuperior.setPreferredSize(new Dimension(900, 450));
 
         }catch (Exception e){
             System.out.println("Erro ao carregar a imagens de fundo\n"+e);
@@ -57,25 +56,22 @@ public class PainelInicial extends JPanel {
 
 
         //caixa de texto
-        Font fonte = new Font("SansSerif", Font.PLAIN, 32);
         texto = new JTextField("C:\\Users\\Hariamy\\Desktop\\netflix.csv", 25);
         texto.setBorder(bordaVazia);
-        texto.setSize(110, 50);
-        texto.setFont(fonte);
+        texto.setSize(110, 20);
+        texto.setFont(Fontes.ROBOTO_MEDIA);
 
         this.painelTexto.add(texto, BorderLayout.CENTER);
-        this.painelTexto.setBackground(corFundo);
+        this.painelTexto.setBackground(Cores.rosaClaro);
         painelTexto.setBorder(bordaVazia);
 
         //BOTAO DE PROCURAR ARQUIVO CSV
 
-
-        Font fonteBotao = new Font("SansSerif", Font.BOLD, 25);
         Botao buscar = new Botao("BUSCAR");
-        buscar.setMargin(new Insets(4, 30, 4, 30));
-        buscar.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoBuscar);
+        buscar.setMargin(new Insets(3, 25, 3, 25));
+        buscar.configurarFonteCorFundo(Fontes.ROBOTO_BOLD_PEQUENA, Cores.corBotaoAzulEscuro, Cores.corVerde);
         buscar.addActionListener(new BotaoBuscar());
-        painelTexto.setPreferredSize(new Dimension(900, 150));
+        painelTexto.setPreferredSize(new Dimension(900, 120));
 
         this.painelTexto.add(buscar, BorderLayout.NORTH);
         this.painelInferir.add(painelTexto, "North");
@@ -83,13 +79,13 @@ public class PainelInicial extends JPanel {
         //BOTAO ANALISAR
         Botao analisar = new Botao("ANALISAR");
         analisar.setMargin(new Insets(10, 40, 10, 40));
-        analisar.configurarFonteCorFundo(fonteBotao, corBranca, corBotaoAnalisar);
+        analisar.configurarFonteCorFundo(Fontes.ROBOTO_BOLD_MEDIA, Cores.corBranca, Cores.corBotaoAzulEscuro);
         analisar.addActionListener(new BotaoAnalisar());
 
 
-        painelBotao.setBackground(corFundo);
+        painelBotao.setBackground(Cores.rosaClaro);
         painelBotao.setBorder(bordaVazia);
-        painelSuperior.setBackground(corFundo);
+        painelSuperior.setBackground(Cores.rosaClaro);
 
         painelBotao.add(analisar, BorderLayout.CENTER);
 
@@ -97,7 +93,7 @@ public class PainelInicial extends JPanel {
 
         this.add(painelSuperior, "North");
         this.add(painelInferir, "Center");
-        this.setBackground(corFundo);
+        this.setBackground(Cores.rosaClaro);
 
     }
 
