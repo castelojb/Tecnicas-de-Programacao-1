@@ -89,12 +89,22 @@ public class Tabelas implements ActionListener{
         tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
 
         cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
-        URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-        Icon fechar = new ImageIcon(fecharIcone);
-        Botao botaoFechar = new Botao(fechar);
-        botaoFechar.setContentAreaFilled(false);
-        botaoFechar.addActionListener(new Fechar(painel));
-        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        try {
+            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
+            Icon fechar = new ImageIcon(fecharIcone);
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+
+        } catch (Exception e){
+            //apagar
+            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        }
 
         cabecalhoInformacao.add(new JLabel(setInformacao()));
         cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);
@@ -195,8 +205,8 @@ public class Tabelas implements ActionListener{
         if (nome.matches("covariancia")) tituloGeral = "a tabela de covariancia";
         if (nome.matches("coeficiente")) tituloGeral = "o coeficiente de variação de Pearson";
 
-        tituloGeral = "<html><center>É possível calcular "+tituloGeral+" selecionando todas as linhas de uma coluna" +
-                "<br/>ou realizar o cálculo escolhendo apenas as linhas que possuem um elemento específico em comum</center></html>";
+        tituloGeral = "<html><center>É possível calcular "+tituloGeral+" selecionando todos os valores de um atribudo ou realizar o cálculo" +
+                "<br/>restringindo a população para aqueles que possuem o mesmo valor em um atributo fixo.</center></html>";
         return tituloGeral;
     }
 

@@ -78,6 +78,7 @@ public class Metricas extends Csv {
         Set<String> semRepeticao = new HashSet<>();
         int indice = 0;
         if (coluna < this.getNumeroColunas()){
+            System.out.println("Deu bom aqui");
             for (int linha = 0; linha < tamanho; linha++){
                 semRepeticao.add(getElemento(linha, coluna));
             }
@@ -86,6 +87,7 @@ public class Metricas extends Csv {
         String[] elementos = new String[semRepeticao.size()];
 
         for (String item : semRepeticao){
+            System.out.println(item);
             elementos[indice] = item;
             indice++;
         }
@@ -287,7 +289,6 @@ public class Metricas extends Csv {
 
         for (int linha = 0; linha < tamanho ; linha++) {
             if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna)) {
-                System.out.println("Erro está nas métricas");
                 if (dicionario.containsKey(this.elementoNumerico(linha, coluna))) {
                     repeticao = dicionario.get(this.elementoNumerico(linha, coluna));
                     repeticao++;

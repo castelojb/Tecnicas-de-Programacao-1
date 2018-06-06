@@ -44,6 +44,10 @@ public class Janela extends JFrame{
             this.setIconImage(imagemIcone);
 
         } catch (Exception e) {
+            //apagar
+            URL url = ClassLoader.getSystemResource("imagens\\icone.png");
+            Image imagemIcone = Toolkit.getDefaultToolkit().getImage(url);
+            this.setIconImage(imagemIcone);
             System.out.println("Erro ao carregar o ícone\n"+e);
         }
 

@@ -62,18 +62,33 @@ public class PainelInformacoes extends JPanel{
 
 
         //   BARRA DE FERRAMENTAS - BOTÃO VOLTAR  //
-        URL voltarIcone = ClassLoader.getSystemResource("volta.png");
-        Icon botaoVoltar = new ImageIcon(voltarIcone);
+        try {
+            URL voltarIcone = ClassLoader.getSystemResource("volta.png");
+            Icon botaoVoltar = new ImageIcon(voltarIcone);
 
-        Botao voltar = new Botao(botaoVoltar);
-        voltar.setContentAreaFilled(false);
-        voltar.addActionListener(new BotaoVoltar());
+            Botao voltar = new Botao(botaoVoltar);
+            voltar.setContentAreaFilled(false);
+            voltar.addActionListener(new BotaoVoltar());
 
 
-        painelSuperior.add(voltar, BorderLayout.WEST);
-        painelSuperior.setBackground(Cores.rosaClaro);
+            painelSuperior.add(voltar, BorderLayout.WEST);
+            painelSuperior.setBackground(Cores.rosaClaro);
 
-        this.add(painelSuperior, BorderLayout.NORTH);
+            this.add(painelSuperior, BorderLayout.NORTH);
+        } catch (Exception e){
+            //apagar
+            Icon botaoVoltar = new ImageIcon(getClass().getResource("/imagens\\volta.png"));
+
+            Botao voltar = new Botao(botaoVoltar);
+            voltar.setContentAreaFilled(false);
+            voltar.addActionListener(new BotaoVoltar());
+
+
+            painelSuperior.add(voltar, BorderLayout.WEST);
+            painelSuperior.setBackground(Cores.rosaClaro);
+
+            this.add(painelSuperior, BorderLayout.NORTH);
+        }
 
 
         //   BARRA DOS BOTÕES - //

@@ -99,12 +99,22 @@ public class Graficos implements ActionListener{
         tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
 
         cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
-        URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-        Icon fechar = new ImageIcon(fecharIcone);
-        Botao botaoFechar = new Botao(fechar);
-        botaoFechar.setContentAreaFilled(false);
-        botaoFechar.addActionListener(new Fechar(painel));
-        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        try {
+            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
+            Icon fechar = new ImageIcon(fecharIcone);
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        } catch (Exception e){
+            //apagar
+            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+
+        }
 
         cabecalhoInformacao.add(new JLabel(setInformacao()));
         cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);

@@ -54,6 +54,11 @@ public class PainelInicial extends JPanel {
             painelSuperior.setPreferredSize(new Dimension(900, 450));
 
         }catch (Exception e){
+            //apagar
+            Icon imagemTitulo = new ImageIcon(getClass().getResource("/imagens\\inicial.png"));
+            JLabel titulo = new JLabel(imagemTitulo, SwingConstants.CENTER);
+            painelSuperior.add(titulo, BorderLayout.CENTER);
+            painelSuperior.setPreferredSize(new Dimension(900, 450));
             System.out.println("Erro ao carregar a imagens de fundo\n"+e);
         }
 

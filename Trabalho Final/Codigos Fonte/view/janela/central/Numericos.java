@@ -40,6 +40,7 @@ public class Numericos implements ActionListener{
         this.informacoes = informacoes;
         this.nome = nome;
     }
+
     public void actionPerformed(ActionEvent evento) {
 
         JPanel painel = new JPanel();
@@ -78,12 +79,21 @@ public class Numericos implements ActionListener{
         tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
 
         cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
-        URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-        Icon fechar = new ImageIcon(fecharIcone);
-        Botao botaoFechar = new Botao(fechar);
-        botaoFechar.setContentAreaFilled(false);
-        botaoFechar.addActionListener(new Fechar(painel));
-        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        try {
+            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
+            Icon fechar = new ImageIcon(fecharIcone);
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        } catch (Exception e){
+            //apagar
+            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
+        }
 
         cabecalhoInformacao.add(new JLabel(setInformacao()));
         cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);
@@ -216,6 +226,7 @@ public class Numericos implements ActionListener{
                     vetor = nenhum;
                 }else{
                     vetor =  controlador.elementosColunaSemRepeticao(colunaFixa);
+                    elementoFixo = vetor[0];
                 }
 
                 DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel(vetor);
@@ -251,7 +262,10 @@ public class Numericos implements ActionListener{
             this.painel = painel;
         }
         public void actionPerformed(ActionEvent evento) {
-            painel.remove(calcular);
+            calcular.setVisible(false);
+            calcular.removeAll();
+            calcular.repaint();
+            calcular.revalidate();
             informacoes.eliminaPainelCentral(this.painel, 230);
         }
     }

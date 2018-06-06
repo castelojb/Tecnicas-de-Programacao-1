@@ -61,13 +61,23 @@ public class Editar implements ActionListener{
 
         cabecalho.setBackground(Cores.corVerde);
         cabecalho.add(titulo, BorderLayout.WEST);
-        URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-        Icon fechar = new ImageIcon(fecharIcone);
-        Botao botaoFechar = new Botao(fechar);
-        botaoFechar.setContentAreaFilled(false);
-        botaoFechar.addActionListener(new Fechar(painel));
-        cabecalho.add(botaoFechar, BorderLayout.EAST);
-        painel.add(cabecalho, BorderLayout.NORTH);
+        try {
+            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
+            Icon fechar = new ImageIcon(fecharIcone);
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalho.add(botaoFechar, BorderLayout.EAST);
+            painel.add(cabecalho, BorderLayout.NORTH);
+        } catch (Exception e){
+            //apagar
+            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+            Botao botaoFechar = new Botao(fechar);
+            botaoFechar.setContentAreaFilled(false);
+            botaoFechar.addActionListener(new Fechar(painel));
+            cabecalho.add(botaoFechar, BorderLayout.EAST);
+            painel.add(cabecalho, BorderLayout.NORTH);
+        }
 
 
         String nomeArquivo = controlador.nomeArquivo.replace("\\", "-");

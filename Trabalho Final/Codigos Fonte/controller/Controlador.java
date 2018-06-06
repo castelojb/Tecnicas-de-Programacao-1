@@ -96,13 +96,14 @@ public class Controlador {
         String elementos = "";
         if (valores[0] == 0) elementos = "é Amodal, ou seja, não possuem moda.";
         else if (valores[0] == 2) elementos = "possue moda igual a: ";
-        else if (valores[0] == 3) elementos = "são Bimodais com modas: [ ";
-        else elementos = "são Multimodais com modas: [ ";
+        else if (valores[0] == 3) elementos = "são Bimodais com modas: ";
+        else elementos = "são Multimodais com modas: ";
 
         for (int i = 1; i < valores[0]; i++){
             if (i == 1) elementos += String.valueOf(valores[i]);
+            else if ((i != 1) && (i == valores[0]-1)) elementos += (" e " + String.valueOf(valores[i]));
             else elementos += (", " + String.valueOf(valores[i]));
-            if ((i != 1) && (i == valores[0]-1)) elementos+=" ]";
+
         }
         return elementos;
     }
@@ -113,13 +114,13 @@ public class Controlador {
         String elementos = "";
         if (valores[0] == 0) elementos = "é Amodal, ou seja, não possuem moda.";
         else if (valores[0] == 2) elementos = "possue moda igual a: ";
-        else if (valores[0] == 3) elementos = "são Bimodais com modas: [ ";
-        else elementos = "são Multimodais com modas: [ ";
+        else if (valores[0] == 3) elementos = "são Bimodais com modas: ";
+        else elementos = "são Multimodais com modas: ";
 
         for (int i = 1; i < valores[0]; i++){
             if (i == 1) elementos += String.valueOf(valores[i]);
-            else elementos += (", "+String.valueOf(valores[i]));
-            if ((i != 1) && (i == valores[0]-1)) elementos+=" ]";
+            else if ((i != 1) && (i == valores[0]-1)) elementos += (" e " + String.valueOf(valores[i]));
+            else elementos += (", " + String.valueOf(valores[i]));
 
         }
 
