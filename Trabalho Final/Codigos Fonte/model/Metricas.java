@@ -1,13 +1,13 @@
 package model;
 
-import com.sun.javafx.collections.SetListenerHelper;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.ArrayList;
+
+
 public class Metricas extends Csv {
 
     public Metricas(File file){
@@ -17,21 +17,31 @@ public class Metricas extends Csv {
 
     public boolean colunaNumerica(int coluna){
         int linha = 0;
-        try{
-            String elemento = getElemento(linha, coluna);
-            while (elemento.equals("NA") || elemento.equals("")){
-                linha++;
-                elemento = getElemento(linha, coluna);
-            }
-        } catch (Exception e){
-            System.out.println("Esse CSV tá meio bugado" + e);
+
+        String elemento = getElemento(linha, coluna);
+        while (elemento.equals("NA") || elemento.equals("")){
+            elemento = getElemento(linha, coluna);
+            linha++;
         }
 
-        if (getElemento(linha, coluna).matches("^([+-]?\\d*\\.?\\d*)$")){
-            return true;
-        } else{
-            return false;
+        if (getElemento(linha, coluna).matches("^([+-]?\\d*\\.?\\d*)$"))  return true;
+        else return false;
+
+    }
+
+    public boolean colunaNumerica(int coluna, String elemento2){
+        int linha = 0;
+        int tamanho = getNumeroLinhas();
+        String elemento = getElemento(linha, coluna);
+        while ((elemento.equals("NA") || elemento.equals("") || elemento.equals(elemento2)) && linha < tamanho){
+            elemento = getElemento(linha, coluna);
+            linha++;
         }
+        if (linha == tamanho) linha--;
+
+        if (getElemento(linha, coluna).matches("^([+-]?\\d*\\.?\\d*)$"))  return true;
+        else return false;
+
     }
 
     protected boolean eNumerico(int linha, int coluna){
@@ -277,6 +287,7 @@ public class Metricas extends Csv {
 
         for (int linha = 0; linha < tamanho ; linha++) {
             if (this.getElemento(linha, colunaFixa).matches(nome) && this.eNumerico(linha, coluna)) {
+                System.out.println("Erro está nas métricas");
                 if (dicionario.containsKey(this.elementoNumerico(linha, coluna))) {
                     repeticao = dicionario.get(this.elementoNumerico(linha, coluna));
                     repeticao++;
@@ -404,7 +415,7 @@ public class Metricas extends Csv {
             }
         }
 
-        return (somatorio1*total)/(Math.pow(somatorio2, 2));
+        return (Math.pow(somatorio2, 2)) == 0? 0 : (somatorio1*total)/(Math.pow(somatorio2, 2));
     }
 
     public double kurtosis (int colunaFixa, String nome, int coluna) {
@@ -422,7 +433,7 @@ public class Metricas extends Csv {
             }
         }
 
-        return (somatorio1*total)/(Math.pow(somatorio2, 2));
+        return (Math.pow(somatorio2, 2)) == 0? 0 : (somatorio1*total)/(Math.pow(somatorio2, 2));
     }
 
     public double skewness (int coluna) {
@@ -440,7 +451,7 @@ public class Metricas extends Csv {
             }
         }
 
-        return (somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
+        return Math.pow(somatorio2, 1.5) == 0? 0 : (somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
     }
 
     public double skewness (int colunaFixa, String nome, int coluna) {
@@ -458,7 +469,7 @@ public class Metricas extends Csv {
             }
         }
 
-        return (somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
+        return Math.pow(somatorio2, 1.5) == 0? 0 :(somatorio1) *Math.sqrt(total) / Math.pow(somatorio2, 1.5);
     }
 
 
