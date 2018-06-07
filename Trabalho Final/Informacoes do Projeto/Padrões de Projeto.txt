@@ -1,0 +1,19 @@
+
+===========================================================================================================================================================================
+Decorator:
+	Utilizada principalmente na construção dos gráficos, onde existe uma "decoração" para cada tipo de gráfico que o usuário gostaria de visualizar,como a classe 
+histograma que decora a classe principal gráfico. Dessa forma, será mais prático expandir o programa para novos tipos de gráficos ou atualizar os existentes.
+=========================================================================================================================================================================== 
+Observer:
+	Pela sua própria ideia, ela serve para notificar um objeto de mudanças ocorridas no outro objeto observado. Usamos ele como um visualizador do estado dos
+botões na interface gráfica, avisando a classe janela numérica das mudanças ocorridas neles.
+==========================================================================================================================================================================
+MVC:
+	Esse padrão foi utilizado para organizar o nosso código e torna-lo mais eficiente para o desenvolvemento paralelo, funciona bem para trabalhos em grupo
+	Modelo:
+		Basicamente onde esta localizada a lógica do código e as métricas. 
+	Visão:
+		É nela que estão localizadas as saídas que serão exibidas na interface gráfica, como os gráficos.
+	Controlador:
+		Basicamente ele converte as requisisões feitas na interface gráfica em comandos para o modelo ou para a visão, explicitamente, ela é a nossa classe 
+	Controller.
