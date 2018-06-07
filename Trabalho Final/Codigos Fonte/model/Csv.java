@@ -16,22 +16,18 @@ public class Csv {
         int cont = 1;
         dados = new ArrayList<>();
         cabecalhoMap = new HashMap<>();
-        Scanner leitor = null;
+
         try {
-            leitor = new Scanner(arquivo, "utf-8");
+            Scanner leitor = new Scanner(arquivo);
 
             String linhasDoArquivo;
-            String cabecalhoString = "";
-            if (leitor.hasNext()) cabecalhoString = leitor.nextLine();
-
+            String cabecalhoString = leitor.nextLine();
             cabecalhoArray = cabecalhoString.split(",");
-
             numeroColunas = this.cabecalhoArray.length;
 
             for (int i = 0; i < numeroColunas; i++){
                 this.cabecalhoMap.put(cabecalhoArray[i], i);
             }
-
             while(leitor.hasNext()) {
 
                 linhasDoArquivo = leitor.nextLine();
@@ -76,40 +72,39 @@ public class Csv {
             }
 
             numeroLinhas = dados.size();
-            leitor.close();
 
         } catch(Exception e) {
             erro = true;
-            if (leitor != null) leitor.close();
             System.out.println("Erro ao carregar o CSV: "+cont+"\n"+e);
+
         }
     }
 
-     boolean getErro(){
+    protected boolean getErro(){
         return this.erro;
     }
 
-     HashMap<String, Integer> getCabecalhoMap(){
+    protected HashMap<String, Integer> getCabecalhoMap(){
         return this.cabecalhoMap;
     }
 
-     String[] getCabecalhoArray(){
+    protected String[] getCabecalhoArray(){
         return this.cabecalhoArray;
     }
 
-     ArrayList<String[]> getDados(){
+    protected ArrayList<String[]> getDados(){
         return this.dados;
     }
 
-     int getNumeroLinhas() {
+    protected int getNumeroLinhas() {
         return this.numeroLinhas;
     }
 
-     int getNumeroColunas() {
+    protected int getNumeroColunas() {
         return this.numeroColunas;
     }
 
-     String getElemento(int linha, int coluna) {
+    protected String getElemento(int linha, int coluna) {
         return this.dados.get(linha)[coluna];
     }
 

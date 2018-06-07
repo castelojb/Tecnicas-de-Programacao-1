@@ -46,7 +46,7 @@ public class GraficoFrequencias implements Grafico{
             String nome = porcentagem? dados[linha][2].split(" %")[0] : dados[linha][1];
             String informacao = dados[linha][0];
             if (dados[linha][1].matches("^([+-]?\\d*\\.?\\d*)$") && Float.parseFloat(dados[linha][1]) != 0 ){
-                dataset.addValue(Float.parseFloat(nome), tituloTabela, informacao);
+                dataset.addValue(Float.parseFloat(nome), informacao, tituloTabela);
 
             }
         }

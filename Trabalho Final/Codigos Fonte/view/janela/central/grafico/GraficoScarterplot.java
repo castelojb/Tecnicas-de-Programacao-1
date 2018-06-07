@@ -14,9 +14,13 @@ public class GraficoScarterplot implements Grafico {
     ChartPanel painel;
     public GraficoScarterplot(String title, String[][] valores, String titulo1, String titulo2) {
 
-        XYDataset dataset = createDataset(valores);
+        // Create dataset
+        XYDataset dataset = createDataset(valores, titulo1, titulo2);
 
-        JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot de "+titulo1+" VS "+titulo2, titulo1, titulo2, dataset);
+        // Create chart
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                "Scatter Plot de "+titulo1+" VS "+titulo2,
+                titulo1, titulo2, dataset);
 
         chart.removeLegend();
         XYPlot plot = (XYPlot)chart.getPlot();
@@ -30,10 +34,11 @@ public class GraficoScarterplot implements Grafico {
         return painel;
     }
 
-    private XYDataset createDataset(String[][] valores) {
+    private XYDataset createDataset(String[][] valores, String titulo1, String titulo2) {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series1 = new XYSeries("");
 
+        //Boys (Age,weight) series
         for (int linha = 0; linha < valores[0].length; linha++){
             if (valores[0][linha].matches("^([+-]?\\d*\\.?\\d*)$") && valores[1][linha].matches("^([+-]?\\d*\\.?\\d*)$")) {
                 series1.add(Float.parseFloat(valores[0][linha]), Float.parseFloat(valores[1][linha]));

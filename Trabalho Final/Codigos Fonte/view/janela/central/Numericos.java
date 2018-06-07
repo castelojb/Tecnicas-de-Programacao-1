@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.Method;
-import java.net.URL;
 
 public class Numericos implements ActionListener{
     private Font fonteBotao = new Font("SansSerif", Font.BOLD, 25);
@@ -31,7 +30,6 @@ public class Numericos implements ActionListener{
     JComboBox setColunaFixa;
     JComboBox setElementoFixo;
     JComboBox setColunaCalculavel;
-    JPanel calcular;
 
     String[] nenhum = {"Nenhum"};
 
@@ -40,7 +38,6 @@ public class Numericos implements ActionListener{
         this.informacoes = informacoes;
         this.nome = nome;
     }
-
     public void actionPerformed(ActionEvent evento) {
 
         JPanel painel = new JPanel();
@@ -60,7 +57,7 @@ public class Numericos implements ActionListener{
         escolhas.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
 
 
-        calcular = new JPanel();
+        JPanel calcular = new JPanel();
         calcular.setLayout(new GridBagLayout());
         calcular.setPreferredSize(new Dimension(740, 60));
 
@@ -79,21 +76,11 @@ public class Numericos implements ActionListener{
         tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
 
         cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
-        try {
-            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-            Icon fechar = new ImageIcon(fecharIcone);
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
-        } catch (Exception e){
-            //apagar
-            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
-        }
+        Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+        Botao botaoFechar = new Botao(fechar);
+        botaoFechar.setContentAreaFilled(false);
+        botaoFechar.addActionListener(new Fechar(painel));
+        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
 
         cabecalhoInformacao.add(new JLabel(setInformacao()));
         cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);
@@ -212,8 +199,8 @@ public class Numericos implements ActionListener{
 
         if (!colunaFixa.matches("Nenhum")) fixo = "<br/>que possuem o valor: \""+elementoFixo+"\" na coluna: \""+colunaFixa+"\"";
 
+
         String result = "<html><center>"+tituloGeral+" dos elementos da coluna: \""+colunaCalculavel+"\" "+fixo+" <br/>é igual a "+valor+"</center></html>";
-        if (nome.matches("moda")) result = "<html><center>Os elementos da propriedade: \""+colunaCalculavel+"\" "+fixo+"<br/>"+valor+"</center></html>";
         return result;
     }
 
@@ -226,7 +213,6 @@ public class Numericos implements ActionListener{
                     vetor = nenhum;
                 }else{
                     vetor =  controlador.elementosColunaSemRepeticao(colunaFixa);
-                    elementoFixo = vetor[0];
                 }
 
                 DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel(vetor);
@@ -262,10 +248,6 @@ public class Numericos implements ActionListener{
             this.painel = painel;
         }
         public void actionPerformed(ActionEvent evento) {
-            calcular.setVisible(false);
-            calcular.removeAll();
-            calcular.repaint();
-            calcular.revalidate();
             informacoes.eliminaPainelCentral(this.painel, 230);
         }
     }

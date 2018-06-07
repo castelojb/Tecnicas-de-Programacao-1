@@ -1,12 +1,10 @@
 package view.layout;
 
 import java.awt.*;
-import java.io.File;
 
 public class Fontes {
 
     public static final Font ROBOTO_PEQUENA = new Font("Roboto", Font.PLAIN, 25);
-    public static final Font ROBOTO_MENOR = new Font("Roboto", Font.PLAIN, 21);
     public static final Font ROBOTO_MEDIA = new Font("Roboto", Font.PLAIN, 30);
     public static final Font ROBOTO_GRANDE = new Font("Roboto", Font.PLAIN, 35);
     public static final Font ROBOTO_BOLD_PEQUENA = new Font("Roboto", Font.BOLD, 25);

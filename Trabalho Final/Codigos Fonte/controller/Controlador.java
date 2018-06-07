@@ -3,9 +3,6 @@ package controller;
 import model.Metricas;
 
 import java.io.File;
-import java.net.JarURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +14,7 @@ public class Controlador {
 
     public Controlador(String arquivo){
         try{
-            this.nomeArquivo =arquivo;
+            nomeArquivo = arquivo;
             File arquivoCSV = new File(arquivo);
             dados = new Metricas(arquivoCSV);
 
@@ -94,34 +91,19 @@ public class Controlador {
     public String moda(String coluna) {
         double[] valores = dados.moda(dados.indiceCabecalho(coluna));
         String elementos = "";
-        if (valores[0] == 0) elementos = "é Amodal, ou seja, não possuem moda.";
-        else if (valores[0] == 2) elementos = "possue moda igual a: ";
-        else if (valores[0] == 3) elementos = "são Bimodais com modas: ";
-        else elementos = "são Multimodais com modas: ";
-
         for (int i = 1; i < valores[0]; i++){
             if (i == 1) elementos += String.valueOf(valores[i]);
-            else if ((i != 1) && (i == valores[0]-1)) elementos += (" e " + String.valueOf(valores[i]));
             else elementos += (", " + String.valueOf(valores[i]));
-
         }
         return elementos;
     }
 
     public String moda(String colunaFixa, String nome, String coluna) {
         double[] valores = dados.moda(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna));
-
         String elementos = "";
-        if (valores[0] == 0) elementos = "é Amodal, ou seja, não possuem moda.";
-        else if (valores[0] == 2) elementos = "possue moda igual a: ";
-        else if (valores[0] == 3) elementos = "são Bimodais com modas: ";
-        else elementos = "são Multimodais com modas: ";
-
         for (int i = 1; i < valores[0]; i++){
             if (i == 1) elementos += String.valueOf(valores[i]);
-            else if ((i != 1) && (i == valores[0]-1)) elementos += (" e " + String.valueOf(valores[i]));
-            else elementos += (", " + String.valueOf(valores[i]));
-
+            else elementos += (", "+String.valueOf(valores[i]));
         }
 
         return elementos;
@@ -334,7 +316,7 @@ public class Controlador {
         String[][] csv = new String[dados.getDadosCSV().size()][];
         ArrayList<String[]> dadosCSV = dados.getDadosCSV();
         for (int linha = 0; linha < dados.getDadosCSV().size(); linha++){
-            csv[linha] = dadosCSV.get(linha).clone();
+            csv[linha] = dadosCSV.get(linha);
         }
         return csv;
     }

@@ -9,7 +9,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -61,23 +60,12 @@ public class Editar implements ActionListener{
 
         cabecalho.setBackground(Cores.corVerde);
         cabecalho.add(titulo, BorderLayout.WEST);
-        try {
-            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-            Icon fechar = new ImageIcon(fecharIcone);
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalho.add(botaoFechar, BorderLayout.EAST);
-            painel.add(cabecalho, BorderLayout.NORTH);
-        } catch (Exception e){
-            //apagar
-            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalho.add(botaoFechar, BorderLayout.EAST);
-            painel.add(cabecalho, BorderLayout.NORTH);
-        }
+        Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+        Botao botaoFechar = new Botao(fechar);
+        botaoFechar.setContentAreaFilled(false);
+        botaoFechar.addActionListener(new Fechar(painel));
+        cabecalho.add(botaoFechar, BorderLayout.EAST);
+        painel.add(cabecalho, BorderLayout.NORTH);
 
 
         String nomeArquivo = controlador.nomeArquivo.replace("\\", "-");
@@ -127,7 +115,6 @@ public class Editar implements ActionListener{
             this.painel = painel;
         }
         public void actionPerformed(ActionEvent evento) {
-            painel.removeAll();
             informacoes.eliminaPainelCentral(this.painel, 690);
         }
     }
@@ -211,11 +198,9 @@ public class Editar implements ActionListener{
             ArrayList<String> arquivo = prepararArquivo();
             if (arquivo == null) throw new EmptyStackException();
             Path file = Paths.get(onde);
-            Files.write(file, arquivo, Charset.forName("utf-8"));
-
+            Files.write(file, arquivo, Charset.defaultCharset());
             controlador.setControler(controlador.nomeArquivo);
-            URL okIcone = ClassLoader.getSystemResource("ok.png");
-            Icon iconeOK = new ImageIcon(okIcone);
+            Icon iconeOK = new ImageIcon(getClass().getResource("/imagens\\ok.png"));
             JOptionPane.showMessageDialog (new JFrame(), "Arquivo salvo com sucesso!", "", JOptionPane.INFORMATION_MESSAGE, iconeOK);
 
         } catch (Exception e){

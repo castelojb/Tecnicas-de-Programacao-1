@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.Method;
-import java.net.URL;
 
 public class Graficos implements ActionListener{
     private Font fonteBotao = new Font("SansSerif", Font.BOLD, 25);
@@ -99,22 +98,11 @@ public class Graficos implements ActionListener{
         tituloGeral.setForeground(Cores.corBotaoAzulEscuro);
 
         cabecalhoTitulo.add(tituloGeral, BorderLayout.WEST);
-        try {
-            URL fecharIcone = ClassLoader.getSystemResource("fechar.png");
-            Icon fechar = new ImageIcon(fecharIcone);
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
-        } catch (Exception e){
-            //apagar
-            Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
-            Botao botaoFechar = new Botao(fechar);
-            botaoFechar.setContentAreaFilled(false);
-            botaoFechar.addActionListener(new Fechar(painel));
-            cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
-
-        }
+        Icon fechar = new ImageIcon(getClass().getResource("/imagens\\fechar.png"));
+        Botao botaoFechar = new Botao(fechar);
+        botaoFechar.setContentAreaFilled(false);
+        botaoFechar.addActionListener(new Fechar(painel));
+        cabecalhoTitulo.add(botaoFechar, BorderLayout.EAST);
 
         cabecalhoInformacao.add(new JLabel(setInformacao()));
         cabecalho.add(cabecalhoTitulo, BorderLayout.NORTH);

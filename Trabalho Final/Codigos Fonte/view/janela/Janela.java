@@ -39,15 +39,11 @@ public class Janela extends JFrame{
 
         try {
             //ICONE BONITINHO
-            URL icone = ClassLoader.getSystemResource("icone.png");
-            Image imagemIcone = Toolkit.getDefaultToolkit().getImage(icone);
-            this.setIconImage(imagemIcone);
-
-        } catch (Exception e) {
-            //apagar
             URL url = ClassLoader.getSystemResource("imagens\\icone.png");
             Image imagemIcone = Toolkit.getDefaultToolkit().getImage(url);
             this.setIconImage(imagemIcone);
+
+        } catch (Exception e) {
             System.out.println("Erro ao carregar o ícone\n"+e);
         }
 

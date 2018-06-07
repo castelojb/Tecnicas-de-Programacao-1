@@ -13,7 +13,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 
 public class PainelInformacoes extends JPanel{
 
@@ -62,33 +61,17 @@ public class PainelInformacoes extends JPanel{
 
 
         //   BARRA DE FERRAMENTAS - BOTÃO VOLTAR  //
-        try {
-            URL voltarIcone = ClassLoader.getSystemResource("volta.png");
-            Icon botaoVoltar = new ImageIcon(voltarIcone);
+        Icon botaoVoltar = new ImageIcon(getClass().getResource("/imagens\\volta.png"));
 
-            Botao voltar = new Botao(botaoVoltar);
-            voltar.setContentAreaFilled(false);
-            voltar.addActionListener(new BotaoVoltar());
+        Botao voltar = new Botao(botaoVoltar);
+        voltar.setContentAreaFilled(false);
+        voltar.addActionListener(new BotaoVoltar());
 
 
-            painelSuperior.add(voltar, BorderLayout.WEST);
-            painelSuperior.setBackground(Cores.rosaClaro);
+        painelSuperior.add(voltar, BorderLayout.WEST);
+        painelSuperior.setBackground(Cores.rosaClaro);
 
-            this.add(painelSuperior, BorderLayout.NORTH);
-        } catch (Exception e){
-            //apagar
-            Icon botaoVoltar = new ImageIcon(getClass().getResource("/imagens\\volta.png"));
-
-            Botao voltar = new Botao(botaoVoltar);
-            voltar.setContentAreaFilled(false);
-            voltar.addActionListener(new BotaoVoltar());
-
-
-            painelSuperior.add(voltar, BorderLayout.WEST);
-            painelSuperior.setBackground(Cores.rosaClaro);
-
-            this.add(painelSuperior, BorderLayout.NORTH);
-        }
+        this.add(painelSuperior, BorderLayout.NORTH);
 
 
         //   BARRA DOS BOTÕES - //
@@ -166,6 +149,7 @@ public class PainelInformacoes extends JPanel{
         painelOeste.add(maximo);
         painelOeste.add(skewness);
         painelOeste.add(kurtoses);
+        painelOeste.add(new JLabel(""));
         painelOeste.add(new JLabel(""));
         painelOeste.add(new JLabel(""));
         painelOeste.add(editar);

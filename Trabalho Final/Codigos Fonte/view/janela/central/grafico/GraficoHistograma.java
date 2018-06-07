@@ -4,7 +4,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
@@ -19,17 +18,17 @@ public class GraficoHistograma implements Grafico{
     public GraficoHistograma(String tituloTabela, String[][] dados, int classes) {
         this.classes = classes;
         this.tituloTabela = tituloTabela;
-        String nome = "Histograma de \""+tituloTabela+"\"";
 
         PlotOrientation orientation = PlotOrientation.VERTICAL;
 
-        JFreeChart chart = ChartFactory.createHistogram(nome, tituloTabela, "Quantidade de Ocorrencia", criarDados( dados), orientation, false, false, false);
+        JFreeChart chart = ChartFactory.createHistogram("Histograma de \""+tituloTabela+"\"", tituloTabela,
+                "Quantidade de Ocorrencia", criarDados( dados), orientation,
+                false,
+                false,
+                false);
 
         chart.setBackgroundPaint(Color.white);
         ChartPanel chartPanel = new ChartPanel( chart, true );
-        XYPlot plot = (XYPlot)chart.getPlot();
-        plot.setBackgroundPaint(new Color(255,228,196));
-
         chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         painel = chartPanel;
