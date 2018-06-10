@@ -15,7 +15,7 @@ public class GraficoContingencia implements Grafico{
                 tituloTabela2, "Repetições", criarDados(titulo, dados), PlotOrientation.VERTICAL, true, true, false);
 
         ChartPanel chartPanel = new ChartPanel( barChart, true );
-        chartPanel.setPreferredSize(new java.awt.Dimension(1500, 5000));
+        chartPanel.setPreferredSize(new java.awt.Dimension(400, 300));
 
         painel = chartPanel;
     }
@@ -30,7 +30,7 @@ public class GraficoContingencia implements Grafico{
 
         for (int coluna = 1; coluna < titulo.length; coluna++){
             for (int linha = 0; linha < dados.length; linha++){
-                if (Float.parseFloat(dados[linha][coluna]) != 0) dataset.addValue(Float.parseFloat(dados[linha][coluna]), titulo[coluna], dados[linha][0]);
+                if (dados[linha][coluna].matches("^([+-]?\\d*\\.?\\d*)$") && Float.parseFloat(dados[linha][coluna]) != 0) dataset.addValue(Float.parseFloat(dados[linha][coluna]), titulo[coluna], dados[linha][0]);
             }
         }
 

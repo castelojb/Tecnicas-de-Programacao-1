@@ -73,6 +73,7 @@ public class Csv {
                 }
 
                 if (valoresEntreVirgulas.length == numeroColunas-1) vetorDaLinha[numeroColunas-1] = "";
+                else if (valoresEntreVirgulas.length != numeroColunas) throw new EmptyStackException();
 
                 dados.add(vetorDaLinha);
                 cont++;
@@ -84,7 +85,7 @@ public class Csv {
         } catch(Exception e) {
             erro = true;
             if (leitor != null) leitor.close();
-            System.out.println("Erro ao carregar o CSV: "+cont+"\n"+e);
+            System.out.println("Erro ao carregar o CSV: "+cont+". Erro: "+e);
         }
     }
 

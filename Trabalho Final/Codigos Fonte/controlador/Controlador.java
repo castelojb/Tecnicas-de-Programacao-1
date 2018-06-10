@@ -86,7 +86,7 @@ public class Controlador {
     public String moda(String coluna) {
         double[] valores = dados.moda(dados.indiceCabecalho(coluna));
         String elementos = "";
-        if (valores[0] == 1) elementos = "é amodal, ou seja, não possuem moda.";
+        if (valores[0] == 0) elementos = "é amodal, ou seja, não possuem moda.";
         else if (valores[0] == 2) elementos = "possue moda igual a: ";
         else if (valores[0] == 3) elementos = "são bimodais com modas: ";
         else elementos = "são multimodais com modas: ";
@@ -104,7 +104,7 @@ public class Controlador {
         double[] valores = dados.moda(dados.indiceCabecalho(colunaFixa), nome, dados.indiceCabecalho(coluna));
 
         String elementos = "";
-        if (valores[0] == 1) elementos = "é amodal, ou seja, não possuem moda.";
+        if (valores[0] == 0) elementos = "é amodal, ou seja, não possuem moda.";
         else if (valores[0] == 2) elementos = "possue moda igual a: ";
         else if (valores[0] == 3) elementos = "são bimodais com modas: ";
         else elementos = "são multimodais com modas: ";

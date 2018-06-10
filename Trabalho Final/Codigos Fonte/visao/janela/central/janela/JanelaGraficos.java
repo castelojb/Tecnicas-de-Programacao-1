@@ -218,9 +218,9 @@ public class JanelaGraficos {
         String tituloGeral = "";
         String espaco = "  ";
         if (nome.matches("contingencia")) tituloGeral = "CALCULAR GRÁFICO DE CONTINGÊNCIA";
-        if (nome.matches("scatterplot")) tituloGeral = "CALCULAR GRÁFICO SCATTERPLOT";
+        if (nome.matches("scatterplot")) tituloGeral = "CALCULAR SCATTER PLOT";
         if (nome.matches("frequencias")) tituloGeral = "CALCULAR GRÁFICO DE FREQUÊNCIAS";
-        if (nome.matches("boxplot")) tituloGeral = "CALCULAR GRÁFICO BOXPLOT";
+        if (nome.matches("boxplot")) tituloGeral = "CALCULAR BOX PLOT";
         if (nome.matches("histograma")) tituloGeral = "CALCULAR GRÁFICO DE HISTOGRAMA";
 
         return espaco + tituloGeral;
@@ -230,9 +230,9 @@ public class JanelaGraficos {
         String tituloGeral = "";
 
         if (nome.matches("contingencia")) tituloGeral = "o gráfico de contingência";
-        if (nome.matches("scatterplot")) tituloGeral = "o gráfico scatterplot";
+        if (nome.matches("scatterplot")) tituloGeral = "o scatter plot";
         if (nome.matches("frequencias")) tituloGeral = "o gráfico de frequências";
-        if (nome.matches("boxplot")) tituloGeral = "o gráfico boxplot";
+        if (nome.matches("boxplot")) tituloGeral = "o box plot";
         if (nome.matches("histograma")) tituloGeral = "o gráfico do histograma";
         String info = "<html><center>É possível calcular "+tituloGeral+" selecionando todas as linhas de uma coluna" +
                 "<br/>ou realizar o cálculo escolhendo apenas as linhas que possuem um elemento específico em comum</center></html>";
@@ -242,9 +242,9 @@ public class JanelaGraficos {
     String setInformacaoVariavel(){
         String tituloGeral = "";
         if (nome.matches("contingencia")) tituloGeral = "CONTINGÊNCIA";
-        if (nome.matches("scatterplot")) tituloGeral = "SCATTERPLOT";
+        if (nome.matches("scatterplot")) tituloGeral = "SCATTER PLOT";
         if (nome.matches("frequencias")) tituloGeral = "FREQUENCIAS";
-        if (nome.matches("boxplot")) tituloGeral = "BOXPLOT";
+        if (nome.matches("boxplot")) tituloGeral = "BOX PLOT";
         if (nome.matches("histograma")) tituloGeral = "HISTOGRAMA";
         String info = tituloGeral+" DE:";
         return info;

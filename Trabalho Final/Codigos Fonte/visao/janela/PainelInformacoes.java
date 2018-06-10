@@ -190,12 +190,12 @@ public class PainelInformacoes extends JPanel{
         frequenciasG.configurarFonteCorFundo(Fontes.ROBOTO_MEDIA, Cores.azulEscuro2, Cores.rosaClaro2);
         frequenciasG.addActionListener(new Graficos(this, "frequencias"));
 
-        Botao boxplot = new Botao("Boxplot");
+        Botao boxplot = new Botao("Box Plot");
         boxplot.setMargin(new Insets(0, 45,0 , 45));
         boxplot.configurarFonteCorFundo(Fontes.ROBOTO_MEDIA, Cores.azulEscuro2, Cores.rosaClaro2);
         boxplot.addActionListener(new Graficos(this, "boxplot"));
 
-        Botao scatterplot = new Botao("Scarteplot");
+        Botao scatterplot = new Botao("Scatter Plot");
         scatterplot.setMargin(new Insets(0, 45,0 , 45));
         scatterplot.configurarFonteCorFundo(Fontes.ROBOTO_MEDIA, Cores.azulEscuro2, Cores.rosaClaro2);
         scatterplot.addActionListener(new Graficos(this, "scatterplot"));

@@ -51,7 +51,8 @@ public class GraficoHistograma implements Grafico{
         for (int i = 0; i < tamanho; i++) dadosFinais[i] = valores[i];
 
         dataset.setType(HistogramType.FREQUENCY);
-        dataset.addSeries("Hist", dadosFinais, classes, Double.parseDouble(dados[1][0]), Double.parseDouble(dados[1][1]));
+        if (dados[1][0].matches("^([+-]?\\d*\\.?\\d*)$") && dados[1][1].matches("^([+-]?\\d*\\.?\\d*)$"))
+            dataset.addSeries("Hist", dadosFinais, classes, Double.parseDouble(dados[1][0]), Double.parseDouble(dados[1][1]));
         return dataset;
     }
 

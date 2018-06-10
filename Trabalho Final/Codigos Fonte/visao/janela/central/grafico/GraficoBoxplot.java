@@ -17,9 +17,7 @@ public class GraficoBoxplot implements Grafico{
 
     public GraficoBoxplot(String tituloTabela, String[][] dados) {
 
-        JFreeChart chart = ChartFactory.createBoxAndWhiskerChart("Boxplot em Relação \""+tituloTabela+"\"", "",
-                tituloTabela, criarDados( dados),
-                legenda(dados));
+        JFreeChart chart = ChartFactory.createBoxAndWhiskerChart("Boxplot em Relação \""+tituloTabela+"\"", "", tituloTabela, criarDados(dados), false);
 
         BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
         renderer.setMeanVisible(false);
@@ -50,14 +48,5 @@ public class GraficoBoxplot implements Grafico{
         dataset.add(dadosFinais, "", "");
         return dataset;
     }
-    private boolean legenda(String[][] dados){
-        for (int linha = 0; linha < dados[0].length; linha++){
-            if (dados[0][linha].matches("^([+-]?\\d*\\.?\\d*)$") ) {
-                if (dados[0][linha].length() > 10) return false;
-            }
-        }
-        return true;
-    }
-
 
 }
